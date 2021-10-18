@@ -138,7 +138,7 @@ public class WarehouseControllerTest {
     click(robot, addItemButtonText);
     assertNotNull(getItemFromWarehouse(testProductName), "unable to create item");
     FxAssert.verifyThat(itemList, NodeMatchers.hasChild(testProductName));
-    click(robot, testProductName); // opens DetailsView
+    click(robot, testProductName);
     robot.clickOn(detailsViewDeleteButton);
     assertNull(getItemFromWarehouse(testProductName), "unable to delete item");
     FxAssert.verifyThat(itemList, NodeMatchers.hasChildren(0, testProductName));
@@ -155,11 +155,10 @@ public class WarehouseControllerTest {
     assertNotNull(testItem, "unable to locate the created Item");
     FxAssert.verifyThat(itemList, NodeMatchers.hasChild(testProductName));
 
-    click(robot, testProductName); // opens DetailsViewController
+    click(robot, testProductName);
     DetailsViewController testProductViewController = getDetailsViewController(testItem);
     assertNotNull(testProductViewController, "unable to find the detailsViewController of the opened item");
 
-    // tests all input fields
     robot.clickOn("#inpBrand").write("TestBrand");
     robot.clickOn("#inpAmount").write("50");
     robot.clickOn("#inpOrdinaryPrice").write("4000");
