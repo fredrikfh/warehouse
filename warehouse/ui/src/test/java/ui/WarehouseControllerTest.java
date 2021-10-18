@@ -40,7 +40,6 @@ public class WarehouseControllerTest {
   private final DataPersistence dataPersistence = new WarehouseFileSaver(FILENAME);
   private Button addItemButtonCopy;
 
-  // TODO declaration should be done dynamically
   private final String addItemButtonText = "Legg til";
   private final String detailsViewSaveButton = "#btnSave";
   private final String detailsViewDeleteButton = "#btnDelete";
@@ -69,7 +68,6 @@ public class WarehouseControllerTest {
 
   private Item getItemFromWarehouse(String name) {
     List<Item> itemList = warehouseController.getItems();
-    // might use warehouse.findItemsByName (will produce duplicates)
     Item testItem = null;
     for (int i = 0; i < itemList.size(); i++) {
       if (itemList.get(i).getName().equals(name)) {
@@ -87,7 +85,6 @@ public class WarehouseControllerTest {
   }
 
   private void removeAllItems() {
-    // TODO this method causes unnecessary method-calls (might smell), check for other solutions
     // Creating a new runner to avoid updating GUI while Stage is not running
     Platform.runLater(new Runnable() {
       @Override
@@ -246,5 +243,4 @@ public class WarehouseControllerTest {
     robot.clickOn("#btnSave");
     assertEquals(0, testItem.getAmount());
   }
-
 }
