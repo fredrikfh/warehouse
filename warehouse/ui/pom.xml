@@ -2,6 +2,10 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>warehouse-ui</artifactId>
+    <properties>
+      <itext.version>7.1.16</itext.version>
+      <skipUiTests>false</skipUiTests>
+    </properties>
 
     <parent>
         <groupId>it1901</groupId>
@@ -68,19 +72,11 @@
             <version>2.2</version>
             <scope>test</scope>
         </dependency>
-
-    
-      <dependency>
-        <groupId>org.scala-lang</groupId>
-        <artifactId>scala-library</artifactId>
-        <version>2.13.0</version>
-      </dependency>
-    
-      <dependency>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-mgmt-resources</artifactId>
-        <version>1.24.2</version>
-      </dependency>
+        <dependency>
+            <groupId>net.sourceforge.barbecue</groupId>
+            <artifactId>barbecue</artifactId>
+            <version>1.5-beta1</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -93,8 +89,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
         		<artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
+                    <skipTests>${skipUiTests}</skipTests>
                     <argLine>
-                    --add-opens warehouse.ui/ui=ALL-UNNAMED --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
+                        --add-opens warehouse.ui/ui=ALL-UNNAMED --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
                     </argLine>
                 </configuration>
 	        </plugin>
@@ -109,6 +106,21 @@
                     <!-- syntax: module-name/full-app-class-name -->
                     <mainClass>warehouse.ui/ui.WarehouseApp</mainClass>
                 </configuration>
+            </plugin>
+            <!-- Run the checkstyle code quality tool -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+            </plugin>
+            <!-- Run the spotbugs code quality tool -->
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+            </plugin>
+            <!-- Configure jacoco code coverage -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

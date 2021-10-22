@@ -1,164 +1,271 @@
 package ui;
 
-import core.Warehouse;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import core.CoreConst.SortOptions;
+import core.CoreConst.SortOption;
 import core.Item;
-import data.IDataPersistence;
+import core.Warehouse;
+import core.WarehouseListener;
+import data.DataPersistence;
 import data.WarehouseFileSaver;
 import javafx.fxml.FXML;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.StrokeType;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 
-public class WarehouseController {
-    private static final String FILENAME = "warehouse";
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-    private Warehouse warehouse;
-    private final IDataPersistence dataPersistence = new WarehouseFileSaver(FILENAME);
+/**
+ * Main Controller class. Controls the main Warehouse view.
+ */
+public class WarehouseController implements WarehouseListener {
+  private static final String FILENAME = "warehouse";
 
-    @FXML
-    Pane textPane;
+  private Warehouse warehouse;
+  private final DataPersistence dataPersistence = new WarehouseFileSaver(FILENAME);
 
-    @FXML
-    VBox vBox;
-    
-    @FXML
-    TextField newProductName;
+  @FXML private Label usernameLabel;
+  @FXML private Button loginButton;
+  @FXML private AnchorPane root;
+  @FXML private GridPane dividerGridPane;
+  @FXML private TextField newProductName;
+  @FXML private ScrollPane itemContainer;
+  @FXML private VBox itemList;
+  @FXML private TextField searchInput;
+  @FXML private ComboBox<String> sortBySelector;
+  @FXML private Button orderByButton;
+  @FXML private VBox sortAndOrderSelectors;
+  @FXML private VBox titleAddandSearch;
 
-    @FXML
-    void initialize() {
-        try {
-            warehouse = dataPersistence.getWarehouse();
-        } catch (Exception e) {
-            System.out.println("Could not load saved warehouse");
-            System.out.println(e.toString());
-        }
-        if (warehouse == null) {
-            warehouse=new Warehouse();
-        }
-        //something here
-        updateInventory();
+  private SortOption sortBy = SortOption.DATE;
+  private boolean ascending = true;
+
+  private Map<Item, DetailsViewController> detailsViewControllers = new HashMap<>();
+  private LoginController loginController;
+
+  @FXML
+  void initialize() {
+    try {
+      warehouse = dataPersistence.getWarehouse();
+    } catch (Exception e) {
+      System.out.println("Could not load saved warehouse");
+      System.out.println(e.toString());
+    }
+    if (warehouse == null) {
+      warehouse = new Warehouse();
     }
 
-    @FXML
-    private void updateInventory() {
-        vBox.getChildren().clear();
-        ArrayList<Pane> itemPaneList = new ArrayList<>();
-        List<Item> allItems = warehouse.getAllItemsSorted(SortOptions.Date, true); //TODO: When adding sorting options, call getAllItemsSorted with params
-        for (int i = 0; i < allItems.size(); i++) {
+    loginController = new LoginController(this, warehouse);
 
-            String id = allItems.get(i).getId();
-            itemPaneList.add(new Pane());
-            itemPaneList.get(i).setPrefHeight(70);
-            itemPaneList.get(i).setPrefWidth(460);
-            itemPaneList.get(i).setStyle("-fx-background-color: #f9f9f9;");
+    updateInventory();
+    enterPressed();
+        
+    List<String> displaySortStrings = List.of("Antall", "Dato", "Navn", "Pris", "Vekt");
+    sortBySelector.getItems().addAll(displaySortStrings);
 
-            //Text
-            Text textName = new Text(allItems.get(i).getName());
-            textName.setStrokeType(StrokeType.OUTSIDE);
-            textName.setStrokeWidth(0);
-            textName.setLayoutX(20);
-            textName.setLayoutY(36);
-            textName.setFont(new Font("Arial Bold",13));
+    searchInput.textProperty().addListener((observable, oldValue, newValue) -> updateInventory());
 
-            Text textStatus = new Text("Status: ");
-            textStatus.setStrokeType(StrokeType.OUTSIDE);
-            textStatus.setStrokeWidth(0);
-            textStatus.setLayoutX(20);
-            textStatus.setLayoutY(50);
+    warehouse.addListener(this);
+  }
 
-            Text textAmountText = new Text("Antall");
-            textAmountText.setStrokeType(StrokeType.OUTSIDE);
-            textAmountText.setStrokeWidth(0);
-            textAmountText.setLayoutX(222);
-            textAmountText.setLayoutY(36);
-            textAmountText.setFont(new Font("Arial Bold",13));
+  @FXML
+  private void login() {
+    if (warehouse.getCurrentUser() == null) {
+      loginController.showLoginView();
+    } else {
+      warehouse.removeCurrentUser();
+      usernameLabel.setText("");
+      loginButton.setText("Logg inn");
+    }
+  }
 
-            Text textAmount = new Text(String.valueOf(allItems.get(i).getAmount()));
-            textAmount.setStrokeType(StrokeType.OUTSIDE);
-            textAmount.setStrokeWidth(0);
-            textAmount.setLayoutX(222);
-            textAmount.setLayoutY(50);
+  protected void updateUser() {
+    usernameLabel.setText(warehouse.getCurrentUser().getUserName());
+    loginButton.setText("Logg ut");
+  }
 
-            //Buttons
-            Button buttonRemove = new Button();
-            buttonRemove.setLayoutX(390);
-            buttonRemove.setLayoutY(23);
-            buttonRemove.setMnemonicParsing(false);
-            buttonRemove.setTextFill(Color.WHITE);
-            buttonRemove.setOnAction(e -> removeItem(id));
-            buttonRemove.setStyle("-fx-background-color: #D95C5C;");
-            buttonRemove.setText("Slett");
+  @FXML
+  private void updateInventory() {
+    itemList.getChildren().clear();
+    List<Item> items = getItems();
+    for (int i = 0; i < items.size(); i++) {
+      ItemElementAnchorPane itemElement = new ItemElementAnchorPane(items.get(i));
 
-            Button buttonIncrement = new Button();
-            buttonIncrement.setLayoutX(300);
-            buttonIncrement.setLayoutY(23);
-            buttonIncrement.setMnemonicParsing(false);
-            buttonIncrement.setTextFill(Color.WHITE);
-            buttonIncrement.setOnAction(e -> incrementAmount(id));
-            buttonIncrement.setStyle("-fx-background-color: #5CA0D9;");
-            buttonIncrement.setText("+");
+      String id = items.get(i).getId();
+      itemElement.getDecrementButton().setOnAction(e -> decrementAmount(id));
+      itemElement.getIncrementButton().setOnAction(e -> incrementAmount(id));
+      
+      if (warehouse.findItem(id).getAmount() == 0) {
+        itemElement.getDecrementButton().setDisable(true);
+      }
 
-            Button buttonDecrement = new Button();
-            buttonDecrement.setLayoutX(195);
-            buttonDecrement.setLayoutY(23);
-            buttonDecrement.setMnemonicParsing(false);
-            buttonDecrement.setTextFill(Color.WHITE);
-            buttonDecrement.setOnAction(e -> decrementAmount(id));
-            buttonDecrement.setStyle("-fx-background-color: #5CA0D9;");
-            buttonDecrement.setText("-");
+      itemList.getChildren().add(itemElement);
+            
+      int index = i;
 
-            itemPaneList.get(i).getChildren().addAll(textName, textStatus, textAmountText, textAmount, buttonRemove, buttonIncrement, buttonDecrement);
+      itemElement.setOnMouseClicked(e -> openDetailsView(items.get(index)));
+      itemElement.setOnMouseEntered(e -> hover(itemElement, index));
+      itemElement.setOnMouseExited(e -> notHover(itemElement, index));
+      notHover(itemElement, index);
+    }
+  }
 
-            vBox.getChildren().add(itemPaneList.get(i));
-        }
+  private void openDetailsView(Item item) {
+    if (! detailsViewControllers.containsKey(item)) {
+      detailsViewControllers.put(item, new DetailsViewController(item, this.warehouse, this));
+    }
+    detailsViewControllers.get(item).showDetailsView();
+  }
+
+  private void notHover(ItemElementAnchorPane itemElement, int i) {
+    itemElement.getStyleClass().removeAll(Arrays.asList("hoverOverDark", "hoverOverLight"));
+    if (i % 2 == 0) {
+      itemElement.getStyleClass().add("notHoverOverLight");
+    } else { 
+      itemElement.getStyleClass().add("notHoverOverDark");
+    }
+    itemElement.setButtonsVisible(false);
+  }
+
+  private void hover(ItemElementAnchorPane itemElement, int i) {
+    itemElement.setCursor(Cursor.HAND);
+    itemElement.getStyleClass().removeAll(Arrays.asList("notHoverOverDark", "notHoverOverLight"));
+    if (i % 2 == 0) {
+      itemElement.getStyleClass().add("hoverOverLight");
+    } else { 
+      itemElement.getStyleClass().add("hoverOverDark");
+    }
+    itemElement.setButtonsVisible(true);
+  }
+
+  protected void removeDetailsViewController(Item item) {
+    if (detailsViewControllers.containsKey(item)) {
+      detailsViewControllers.remove(item);
+    }
+    updateInventory();
+  }
+
+  protected List<Item> getItems() {
+    return warehouse.getItemsSortedAndFiltered(sortBy, ascending, searchInput.getText());
+  }
+
+  private void enterPressed() {
+    newProductName.setOnKeyPressed(event -> {
+      if (event.getCode() == KeyCode.ENTER) {
+        addItem();
+      }
+    });
+  }
+
+  @FXML
+  private void addItem() {
+    Item item = new Item(newProductName.getText());
+    warehouse.addItem(item);
+    saveWarehouse();
+
+    newProductName.requestFocus();
+    newProductName.selectAll();
+  }
+
+  @FXML
+  protected void removeItem(String id) {
+    warehouse.removeItem(warehouse.findItem(id));
+    saveWarehouse();
+  }
+
+  protected void incrementAmount(String id) {
+    warehouse.findItem(id).incrementAmount();
+    saveWarehouse();
+  }
+
+  protected void decrementAmount(String id) {
+    warehouse.findItem(id).decrementAmount();
+    saveWarehouse();
+  }
+
+  @FXML
+  private void changeSortBy() {
+
+    String value = "";
+    if (sortBySelector.getValue() != null) {
+      value = sortBySelector.getValue().toString();
     }
 
-    @FXML
-    private void addItem() {
-        Item item = new Item(newProductName.getText(), 0);
-        warehouse.addItem(item);
-        updateInventory();
-        saveWarehouse();
+    switch (value) {
+      case "Dato":
+        sortBy = SortOption.DATE;
+        ascending = true;
+        break;
+      case "Antall":
+        sortBy = SortOption.AMOUNT;
+        ascending = false;
+        break;
+      case "Navn":
+        sortBy = SortOption.NAME;
+        ascending = true;
+        break;
+      case "Pris":
+        sortBy = SortOption.PRICE;
+        ascending = true;
+        break;
+      case "Vekt":
+        sortBy = SortOption.WEIGHT;
+        ascending = true;
+        break;
+      default:
+        sortBy = SortOption.NAME;
+        break;
+    }
+    updateInventory();
+  }
+
+  @FXML
+  private void changeOrderBy() {
+    ascending = !ascending;
+
+    if (ascending && orderByButton.getStyleClass().contains("descending")) {
+      orderByButton.getStyleClass().remove("descending");
+    }
+    if (!ascending && !orderByButton.getStyleClass().contains("descending")) {
+      orderByButton.getStyleClass().add("descending");
     }
 
-    @FXML
-    private void removeItem(String id) {
-        warehouse.removeItem(warehouse.findItem(id));
-        updateInventory();
-        saveWarehouse();
+    updateInventory();
+  }
+
+  protected void saveWarehouse() {
+    try {
+      dataPersistence.saveItems(warehouse);
+    } catch (Exception e) {
+      System.out.println(e.toString());
     }
+  }
 
-    @FXML
-    private void incrementAmount(String id) {
-        warehouse.findItem(id).incrementAmount();
-        updateInventory();
-        saveWarehouse();
-    }
+  @Override
+  public void itemAddedToWarehouse(Item item) {
+    updateInventory();
+  }
 
-    @FXML
-    private void decrementAmount(String id) {
-        warehouse.findItem(id).decrementAmount();
-        updateInventory();
-        saveWarehouse();
-    }
+  @Override
+  public void warehouseItemsUpdated() {
+    updateInventory();
+  }
 
-    private void saveWarehouse() {
-        try {
-            dataPersistence.saveWarehouse(warehouse);
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        }
-    }
-}
+  @Override
+  public void itemRemovedFromWarehouse(Item item) {
+    updateInventory();
+  }
 
-
+  // for testing purposes only
+  protected HashMap<Item, DetailsViewController> getDetailViewControllers() {
+    return new HashMap<>(detailsViewControllers);
+  }
+} 

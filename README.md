@@ -7,8 +7,8 @@ The Java project is found in the [warehouse](/warehouse) directory, and a readme
 
 ## Trying it out
 
-
 1. Change directory from source root to warehouse
 2. run `mvn install` (If some tests fail, use `mvn install "-DskipTests"`)
 3. Change directory to ui, and
 4. run with `mvn javafx:run`
+ 

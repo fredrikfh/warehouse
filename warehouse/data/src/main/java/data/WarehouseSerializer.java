@@ -1,29 +1,60 @@
 package data;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import core.Item;
+import core.User;
+import core.Warehouse;
+import data.mapper.LocalDateTimeDeserializer;
+import data.mapper.LocalDateTimeSerializer;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.time.LocalDateTime;
 import java.util.List;
 
-import core.Warehouse;
-import core.Item;
+/**
+ * Wrapper class for static functions that serialize and deserialize Warehouse to JSON.
+ */
+public abstract class WarehouseSerializer {
+  public static void itemsToJson(Warehouse warehouse, OutputStream outputStream)
+      throws IOException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.registerModule(getLocalDateTimeModule());
+    objectMapper.writeValue(outputStream, warehouse.getAllItems());
+  }
 
-public class WarehouseSerializer {
-    public static void warehouseToJson(Warehouse warehouse, OutputStream outputStream) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.writeValue(outputStream, warehouse.getAllItems());
+  public static void usersToJson(Warehouse warehouse, OutputStream outputStream)
+      throws IOException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.writeValue(outputStream, warehouse.getUsers());
+  }
+
+  public static Warehouse jsonToWarehouse(InputStream items, InputStream users) throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(getLocalDateTimeModule());
+
+    List<Item> warehouseItems = mapper.readValue(items, new TypeReference<List<Item>>() {});
+    List<User> warehouseUsers = mapper.readValue(users, new TypeReference<List<User>>() {});
+
+    Warehouse warehouse = new Warehouse();
+    for (Item item : warehouseItems) {
+      warehouse.addItem(item);
     }
 
-    public static Warehouse jsonToWarehouse(InputStream json) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<Item> warehouseItems = objectMapper.readValue(json, new TypeReference<List<Item>>(){});
-        Warehouse warehouse = new Warehouse();
-        for (Item item : warehouseItems) {
-            warehouse.addItem(item);
-        }
-        return warehouse;
+    for (User user : warehouseUsers) {
+      warehouse.addUser(user);
     }
+
+    return warehouse;
+  }
+
+  private static SimpleModule getLocalDateTimeModule() {
+    SimpleModule localDateTimeModule = new SimpleModule();
+    localDateTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer());
+    localDateTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer());
+    return localDateTimeModule;
+  }
 }
