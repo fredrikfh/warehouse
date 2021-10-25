@@ -118,6 +118,10 @@ public class DetailsViewController {
     } catch (Exception e) {
       e.printStackTrace();
     }
+
+    if (!warehouse.isAdmin()) {
+      btnEdit.setVisible(false);
+    }
   }
 
   @FXML
