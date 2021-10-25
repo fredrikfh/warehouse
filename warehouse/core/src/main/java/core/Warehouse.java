@@ -202,6 +202,14 @@ public class Warehouse {
     this.currentUser = currentUser;
   }
 
+  public boolean isAdmin() {
+    if (currentUser==null) {
+      return false;
+    } else {
+      return currentUser.getAdmin();
+    }
+  }
+
   public void removeCurrentUser() {
     this.currentUser = null;
   }
