@@ -119,10 +119,12 @@ public class WarehouseController implements WarehouseListener {
   }
 
   private void openDetailsView(Item item) {
-    if (! detailsViewControllers.containsKey(item)) {
-      detailsViewControllers.put(item, new DetailsViewController(item, this.warehouse, this));
+    if (warehouse.isAdmin()) {
+      if (! detailsViewControllers.containsKey(item)) {
+        detailsViewControllers.put(item, new DetailsViewController(item, this.warehouse, this));
+      }
+      detailsViewControllers.get(item).showDetailsView();
     }
-    detailsViewControllers.get(item).showDetailsView();
   }
 
   private void notHover(ItemElementAnchorPane itemElement, int i) {
