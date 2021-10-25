@@ -85,11 +85,13 @@ public class WarehouseController implements WarehouseListener {
       usernameLabel.setText("");
       loginButton.setText("Logg inn");
     }
+    updateInventory();
   }
 
   protected void updateUser() {
     usernameLabel.setText(warehouse.getCurrentUser().getUserName());
     loginButton.setText("Logg ut");
+    updateInventory();
   }
 
   @FXML
@@ -100,9 +102,14 @@ public class WarehouseController implements WarehouseListener {
       ItemElementAnchorPane itemElement = new ItemElementAnchorPane(items.get(i));
 
       String id = items.get(i).getId();
+      if (warehouse.isAdmin()) {
       itemElement.getDecrementButton().setOnAction(e -> decrementAmount(id));
       itemElement.getIncrementButton().setOnAction(e -> incrementAmount(id));
-      
+      } else {
+        itemElement.getDecrementButton().setDisable(true);
+        itemElement.getIncrementButton().setDisable(true);
+      }
+
       if (warehouse.findItem(id).getAmount() == 0) {
         itemElement.getDecrementButton().setDisable(true);
       }
@@ -184,13 +191,17 @@ public class WarehouseController implements WarehouseListener {
   }
 
   protected void incrementAmount(String id) {
-    warehouse.findItem(id).incrementAmount();
-    saveWarehouse();
+    if (warehouse.isAdmin()) {
+      warehouse.findItem(id).incrementAmount();
+      saveWarehouse();
+    }
   }
 
   protected void decrementAmount(String id) {
-    warehouse.findItem(id).decrementAmount();
-    saveWarehouse();
+    if (warehouse.isAdmin()) {
+      warehouse.findItem(id).decrementAmount();
+      saveWarehouse();
+    }
   }
 
   @FXML
