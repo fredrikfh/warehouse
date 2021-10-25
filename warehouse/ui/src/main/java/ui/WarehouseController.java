@@ -107,8 +107,8 @@ public class WarehouseController implements WarehouseListener {
       } else {
         itemElement.getDecrementButton().setDisable(true);
         itemElement.getIncrementButton().setDisable(true);
-      }     
-
+        addItemButton.setDisable(true);
+      }
       if (warehouse.findItem(id).getAmount() == 0) {
         itemElement.getDecrementButton().setDisable(true);
       }
