@@ -34,6 +34,7 @@ public class WarehouseController implements WarehouseListener {
 
   @FXML private Label usernameLabel;
   @FXML private Button loginButton;
+  @FXML private Button addItemButton;
   @FXML private AnchorPane root;
   @FXML private GridPane dividerGridPane;
   @FXML private TextField newProductName;
@@ -108,8 +109,8 @@ public class WarehouseController implements WarehouseListener {
       } else {
         itemElement.getDecrementButton().setDisable(true);
         itemElement.getIncrementButton().setDisable(true);
+        addItemButton.setDisable(true);
       }
-
       if (warehouse.findItem(id).getAmount() == 0) {
         itemElement.getDecrementButton().setDisable(true);
       }
@@ -126,12 +127,10 @@ public class WarehouseController implements WarehouseListener {
   }
 
   private void openDetailsView(Item item) {
-    if (warehouse.isAdmin()) {
-      if (! detailsViewControllers.containsKey(item)) {
-        detailsViewControllers.put(item, new DetailsViewController(item, this.warehouse, this));
-      }
-      detailsViewControllers.get(item).showDetailsView();
+    if (! detailsViewControllers.containsKey(item)) {
+      detailsViewControllers.put(item, new DetailsViewController(item, this.warehouse, this));
     }
+    detailsViewControllers.get(item).showDetailsView();
   }
 
   private void notHover(ItemElementAnchorPane itemElement, int i) {
@@ -176,12 +175,14 @@ public class WarehouseController implements WarehouseListener {
 
   @FXML
   private void addItem() {
-    Item item = new Item(newProductName.getText());
-    warehouse.addItem(item);
-    saveWarehouse();
+    if (warehouse.isAdmin()) {
+      Item item = new Item(newProductName.getText());
+      warehouse.addItem(item);
+      saveWarehouse();
 
-    newProductName.requestFocus();
-    newProductName.selectAll();
+      newProductName.requestFocus();
+      newProductName.selectAll();
+    }
   }
 
   @FXML

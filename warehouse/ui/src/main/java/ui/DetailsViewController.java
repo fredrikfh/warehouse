@@ -118,6 +118,10 @@ public class DetailsViewController {
     } catch (Exception e) {
       e.printStackTrace();
     }
+
+    if (!warehouse.isAdmin()) {
+      btnEdit.setVisible(false);
+    }
   }
 
   @FXML
@@ -254,7 +258,6 @@ public class DetailsViewController {
     for (ItemField field : fields.values()) {
       field.saveField();
     }
-
     warehouseController.saveWarehouse();
     update();
   }
