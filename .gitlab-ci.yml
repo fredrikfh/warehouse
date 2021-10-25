@@ -1,42 +1,62 @@
+# You can override the included template(s) by including variable overrides
+# SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
+# Secret Detection customization: https://docs.gitlab.com/ee/user/application_security/secret_detection/#customizing-settings
+# Note that environment variables can be set in several places
+# See https://docs.gitlab.com/ee/ci/variables/#priority-of-environment-variables
 image: maven:3-openjdk-16
-
 cache:
   paths:
-    - .m2/repository/
-    - target/
-
+  - ".m2/repository/"
+  - target/
 Build:
   stage: build
   script:
-    - cd warehouse
-    - mvn compile
+  - cd warehouse
+  - mvn compile
   retry: 1
-
 Jacoco:
   stage: test
   needs: []
   script:
-    - cd warehouse
-    - mvn test -DskipUiTests=true
-    - mvn jacoco:report-aggregate
-    - cat $CI_BUILDS_DIR/$CI_PROJECT_PATH/warehouse/report/target/site/jacoco-aggregate/index.html | grep -o '<tfoot>.*</tfoot>'
+  - cd warehouse
+  - mvn test -DskipUiTests=true
+  - mvn jacoco:report-aggregate
+  - cat $CI_BUILDS_DIR/$CI_PROJECT_PATH/warehouse/report/target/site/jacoco-aggregate/index.html
+    | grep -o '<tfoot>.*</tfoot>'
   artifacts:
     paths:
-      - $CI_BUILDS_DIR/$CI_PROJECT_PATH/warehouse/report/target/site/jacoco-aggregate/*
+    - "$CI_BUILDS_DIR/$CI_PROJECT_PATH/warehouse/report/target/site/jacoco-aggregate/*"
   retry: 1
-
 Verify:
   stage: test
   needs: []
   script:
-    - cd warehouse
-    - mvn verify -DskipUiTests=true
+  - cd warehouse
+  - mvn verify -DskipUiTests=true
   retry: 1
-
 Checkstyle:
   stage: test
   needs: []
   script:
-    - cd warehouse
-    - mvn checkstyle:check
+  - cd warehouse
+  - mvn checkstyle:check
   retry: 1
+stages:
+- build
+- test
+- deploy
+- review
+- dast
+- staging
+- canary
+- production
+- incremental rollout 10%
+- incremental rollout 25%
+- incremental rollout 50%
+- incremental rollout 100%
+- performance
+- cleanup
+sast:
+  stage: test
+include:
+- template: Auto-DevOps.gitlab-ci.yml
