@@ -185,7 +185,11 @@ public class DetailsViewController {
     );
   }
 
-  private void close() {
+  protected boolean isEditing() {
+    return editing;
+  }
+
+  protected void close() {
     warehouseController.removeDetailsViewController(item);
     stage.close();
   }
@@ -334,25 +338,5 @@ public class DetailsViewController {
   
   protected ScrollPane getScrollPane() {
     return detailsViewScrollPane;
-  }
-
-  protected Button getDeleteButton() {
-    return btnDelete;
-  }
-
-  protected Button getSaveButton() {
-    return btnSave;
-  }
-
-  protected Button getIncrementButton() {
-    return btnIncrement;
-  }
-
-  protected Button getDecrementButton() {
-    return btnDecrement;
-  }
-
-  protected TextField getBarcodeTextField() {
-    return inpBarcode;
   }
 }

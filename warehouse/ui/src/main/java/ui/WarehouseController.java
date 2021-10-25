@@ -263,6 +263,16 @@ public class WarehouseController implements WarehouseListener {
     }
   }
 
+  protected boolean canExit() {
+    boolean currentlyEditing = false;
+    for (DetailsViewController controller : detailsViewControllers.values()) {
+      if (controller.isEditing()) {
+        currentlyEditing = true;
+      }
+    }
+    return !currentlyEditing;
+  }
+
   @Override
   public void itemAddedToWarehouse(Item item) {
     updateInventory();
