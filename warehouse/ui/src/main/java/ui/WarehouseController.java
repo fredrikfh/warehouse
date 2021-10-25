@@ -101,8 +101,8 @@ public class WarehouseController implements WarehouseListener {
 
       String id = items.get(i).getId();
       if (warehouse.isAdmin()) {
-      itemElement.getDecrementButton().setOnAction(e -> decrementAmount(id));
-      itemElement.getIncrementButton().setOnAction(e -> incrementAmount(id));
+        itemElement.getDecrementButton().setOnAction(e -> decrementAmount(id));
+        itemElement.getIncrementButton().setOnAction(e -> incrementAmount(id));
       } else {
         itemElement.getDecrementButton().setDisable(true);
         itemElement.getIncrementButton().setDisable(true);
