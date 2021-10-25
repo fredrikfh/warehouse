@@ -66,7 +66,7 @@ public class LoginController {
   @FXML
   private void login() {
     userName = usernameField.getText().toLowerCase();
-    password = User.MD5Hash(passwordField.getText());
+    password = User.md5Hash(passwordField.getText());
     if (!userName.equals("") && !password.equals("")) {
       if (wh.containsUser(userName, password, true)) {
         currentUser = new User(userName, password, true);
@@ -86,6 +86,7 @@ public class LoginController {
   @FXML
   private void register() {
     registerController.showRegisterView();
+    resetLoginView();
   }
 
   protected void showLoginView() {
@@ -95,10 +96,14 @@ public class LoginController {
 
   protected void hideLoginView() {
     stage.hide();
+    resetLoginView();
+
+  }
+
+  private void resetLoginView() {
     errorMessageEmptyField.setText("");
     errorMessageUserNotFound.setText("");
     usernameField.setText("");
     passwordField.setText("");
-
   }
 }
