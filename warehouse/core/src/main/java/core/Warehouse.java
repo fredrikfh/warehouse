@@ -177,7 +177,7 @@ public class Warehouse {
   }
 
   public boolean isAdmin() {
-    if (currentUser==null) {
+    if (currentUser == null) {
       return false;
     } else {
       return currentUser.getAdmin();
