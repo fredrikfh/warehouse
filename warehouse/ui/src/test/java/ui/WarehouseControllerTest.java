@@ -155,6 +155,7 @@ class WarehouseControllerTest {
   void teardown() {
     try {
       dataPersistence.saveItems(originalWarehouse);
+      dataPersistence.saveUsers(originalWarehouse);
     } catch (Exception e) {
       System.out.println("Unable to revert to original warehouse");
     }
@@ -285,17 +286,14 @@ class WarehouseControllerTest {
     Item testItem = getItemFromWarehouse(testProductName);
     ScrollPane detailsViewScrollPane = getDetailsViewController(testItem).getScrollPane();
     assertNotNull(testItem);
+
     ensureVisibleClickOn(detailsViewScrollPane, robot, testProductName);
-
     ensureVisibleClickOn(detailsViewScrollPane, robot, "#btnEdit");
-
     ensureVisibleClickOn(detailsViewScrollPane, robot, "#btnIncrement");
-    //ensureVisible(testProductViewController.getScrollPane(), testProductViewController.getSaveButton());
     ensureVisibleClickOn(detailsViewScrollPane, robot, "#btnSave");
     assertEquals(1, testItem.getAmount());
 
     ensureVisibleClickOn(detailsViewScrollPane, robot, "#btnEdit");
-
     ensureVisibleClickOn(detailsViewScrollPane, robot, "#btnDecrement");
     ensureVisibleClickOn(detailsViewScrollPane, robot, "#btnSave");
     assertEquals(0, testItem.getAmount());

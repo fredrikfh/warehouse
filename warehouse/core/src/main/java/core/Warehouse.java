@@ -202,4 +202,12 @@ public class Warehouse {
     }
     users.add(user);
   }
+
+  public String toString() {
+    String string = "Warehouse\n";
+    for (Item item : items.values()) {
+      string += item.getName() + "\n";
+    }
+    return string;
+  }
 }
