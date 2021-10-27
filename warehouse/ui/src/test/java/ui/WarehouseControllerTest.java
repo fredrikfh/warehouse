@@ -62,6 +62,8 @@ class WarehouseControllerTest {
   private static final String ITEM_LIST = "#itemList";
   private static final String DETAILS_VIEW = "#detailsViewScrollPane";
 
+  private String testUserName;
+
   private WarehouseController warehouseController;
   private Parent root;
   private Warehouse originalWarehouse;
@@ -152,6 +154,26 @@ class WarehouseControllerTest {
     robot.interact(() -> stage.close());
   }
 
+  private void login(FxRobot robot) {
+    robot.clickOn("#loginButton");
+    if (testUserName == null) {
+      register(robot);
+    }
+    robot.clickOn("#usernameField").write(testUserName);
+    robot.clickOn("#passwordField").write("passord");
+    robot.clickOn("#loginUserButton");
+  }
+
+  private void register(FxRobot robot) {
+    testUserName = getRandomProductName();
+    robot.clickOn("#loginButton");
+    robot.clickOn("#registerNewUserButton");
+    robot.clickOn("#userNameField").write(testUserName);
+    robot.clickOn("#passwordField1").write("passord");
+    robot.clickOn("#passwordField2").write("passord");
+    robot.clickOn("#btnRegister");
+  }
+
   @BeforeEach
   void setup() {
     try {
@@ -186,6 +208,7 @@ class WarehouseControllerTest {
   @Test
   @DisplayName("Test add and remove item")
   void testAddAndDelete(FxRobot robot) {
+    login(robot);
     final String testProductName = getRandomProductName();
     createNewItem(robot, testProductName);
     assertNotNull(getItemFromWarehouse(testProductName), "unable to create item");
@@ -202,6 +225,8 @@ class WarehouseControllerTest {
   @Test
   @DisplayName("Test add item to warehouse and alter its properties")
   void testAddItem(FxRobot robot) {
+    login(robot);
+
     final String testProductName = getRandomProductName(); 
     createNewItem(robot, testProductName);
 
@@ -265,6 +290,8 @@ class WarehouseControllerTest {
   @Test
   @DisplayName("Test incrementButtons on frontpage")
   void testIncrementValues(FxRobot robot) {
+    login(robot);
+
     final String testProductName = getRandomProductName();
     createNewItem(robot, testProductName);
     FxAssert.verifyThat(ITEM_LIST, NodeMatchers.hasChild(testProductName));
@@ -282,6 +309,8 @@ class WarehouseControllerTest {
   @Test
   @DisplayName("Test incrementButtons on detailsView")
   void testDetailViewIncrement(FxRobot robot) {
+    login(robot);
+
     final String testProductName = getRandomProductName();
     createNewItem(robot, testProductName);
     robot.clickOn(testProductName);
@@ -325,6 +354,7 @@ class WarehouseControllerTest {
   @Test
   @DisplayName("Test sorting and searching items on name")
   void testSortSearchItems(FxRobot robot) {
+    login(robot);
     createNewItem(robot, "A");
     createNewItem(robot, "B");
     createNewItem(robot, "C");
