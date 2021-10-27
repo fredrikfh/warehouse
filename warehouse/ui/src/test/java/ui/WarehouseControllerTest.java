@@ -61,7 +61,7 @@ class WarehouseControllerTest {
   private static final String ITEM_LIST = "#itemList";
   private static final String DETAILS_VIEW = "#detailsViewScrollPane";
 
-  private String testUserName;
+  private static String testUserName;
 
   private WarehouseController warehouseController;
   private Parent root;
