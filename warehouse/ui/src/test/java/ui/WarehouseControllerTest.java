@@ -62,8 +62,7 @@ class WarehouseControllerTest {
   private static final String ITEM_LIST = "#itemList";
   private static final String DETAILS_VIEW = "#detailsViewScrollPane";
 
-  private static String testUserName;
-
+  private String testUserName;
   private WarehouseController warehouseController;
   private Parent root;
   private Warehouse originalWarehouse;
@@ -351,9 +350,12 @@ class WarehouseControllerTest {
   @DisplayName("Test sorting and searching items on name")
   void testSortSearchItems(FxRobot robot) {
     login(robot);
-    createNewItem(robot, "A");
-    createNewItem(robot, "B");
-    createNewItem(robot, "C");
+    robot.clickOn(WAREHOUSE_NEW_ITEM_INPUTFIELD).write("B");
+    robot.clickOn(ADD_ITEM_BUTTON);
+    robot.write("C");
+    robot.clickOn(ADD_ITEM_BUTTON);  
+    robot.write("A");
+    robot.clickOn(ADD_ITEM_BUTTON);
 
     robot.clickOn("Sorter");
     selectOptionInComboBox(robot, "#sortBySelector", "Navn");
