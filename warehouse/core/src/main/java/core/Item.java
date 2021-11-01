@@ -3,6 +3,7 @@ package core;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,19 +15,19 @@ import java.util.UUID;
 public class Item { 
   private String id;
   private String name;
-  private int amount;
+  private long amount;
   private String barcode;
   private String brand;
-  private Double regularPrice;
-  private Double salePrice;
-  private Double purchasePrice;
+  private BigDecimal regularPrice;
+  private BigDecimal salePrice;
+  private BigDecimal purchasePrice;
   private String section;
   private String row;
   private String shelf;
-  private Double height;
-  private Double width;
-  private Double length;
-  private Double weight;
+  private BigDecimal height;
+  private BigDecimal width;
+  private BigDecimal length;
+  private BigDecimal weight;
   private LocalDateTime creationDate;
 
   Collection<ItemListener> listeners = new ArrayList<>();
@@ -34,19 +35,19 @@ public class Item {
   public Item(
       @JsonProperty("id") String id,
       @JsonProperty("name") String name,
-      @JsonProperty("amount") int amount,
+      @JsonProperty("amount") long amount,
       @JsonProperty("barcode") String barcode,
       @JsonProperty("brand") String brand,
-      @JsonProperty("regularPrice") Double regularPrice,
-      @JsonProperty("salePrice") Double salePrice,
-      @JsonProperty("purchasePrice") Double purchasePrice,
+      @JsonProperty("regularPrice") BigDecimal regularPrice,
+      @JsonProperty("salePrice") BigDecimal salePrice,
+      @JsonProperty("purchasePrice") BigDecimal purchasePrice,
       @JsonProperty("section") String section,
       @JsonProperty("row") String row,
       @JsonProperty("shelf") String shelf,
-      @JsonProperty("itemHeight") Double height,
-      @JsonProperty("itemWidth") Double width,
-      @JsonProperty("itemLength") Double length,
-      @JsonProperty("weight") Double weight,
+      @JsonProperty("itemHeight") BigDecimal height,
+      @JsonProperty("itemWidth") BigDecimal width,
+      @JsonProperty("itemLength") BigDecimal length,
+      @JsonProperty("weight") BigDecimal weight,
       @JsonProperty("creationDate") LocalDateTime creationDate
   ) {
     setId(id);
@@ -67,7 +68,7 @@ public class Item {
     setCreationDate(creationDate);
   }
 
-  public Item(String name, int amount) {
+  public Item(String name, long amount) {
     this(
         UUID.randomUUID().toString(),
         name,
@@ -116,11 +117,11 @@ public class Item {
     notifyChange();
   }
 
-  public int getAmount() {
+  public long getAmount() {
     return amount;
   }
 
-  public void setAmount(int amount) {
+  public void setAmount(long amount) {
     if (amount < CoreConst.MIN_AMOUNT || amount > CoreConst.MAX_AMOUNT) {
       throw new IllegalArgumentException();
     }
@@ -168,41 +169,43 @@ public class Item {
     notifyChange();
   }
 
-  public Double getRegularPrice() {
+  public BigDecimal getRegularPrice() {
     return regularPrice;
   }
 
-  public void setRegularPrice(Double regularPrice) {
-    if (regularPrice != null && (regularPrice < CoreConst.MIN_PRICE || regularPrice > CoreConst.MAX_PRICE)) {
-      throw new IllegalArgumentException("Price cannot be negative or larger than infinity");
+  public void setRegularPrice(BigDecimal regularPrice) {
+    if (regularPrice != null) {
+      if (regularPrice.doubleValue() < CoreConst.MIN_PRICE || regularPrice.doubleValue() > CoreConst.MAX_PRICE) {
+        throw new IllegalArgumentException("Price cannot be negative or larger than infinity");
+      }
     }
     this.regularPrice = regularPrice;
     notifyChange();
   }
 
   @JsonIgnore
-  public Double getCurrentPrice() {
+  public BigDecimal getCurrentPrice() {
     return salePrice != null ? salePrice : regularPrice;
   }
 
-  public Double getSalePrice() {
+  public BigDecimal getSalePrice() {
     return salePrice;
   }
 
-  public void setSalePrice(Double salePrice) {
-    if (salePrice != null && (salePrice < CoreConst.MIN_PRICE || salePrice > CoreConst.MAX_PRICE)) {
+  public void setSalePrice(BigDecimal salePrice) {
+    if (salePrice != null && (salePrice.doubleValue() < CoreConst.MIN_PRICE || salePrice.doubleValue() > CoreConst.MAX_PRICE)) {
       throw new IllegalArgumentException("Price cannot be negative or larger than infinity");
     }
     this.salePrice = salePrice;
     notifyChange();
   }
 
-  public Double getPurchasePrice() {
+  public BigDecimal getPurchasePrice() {
     return purchasePrice;
   }
 
-  public void setPurchasePrice(Double purchasePrice) {
-    if (purchasePrice != null && (purchasePrice < CoreConst.MIN_PRICE || purchasePrice > CoreConst.MAX_PRICE)) {
+  public void setPurchasePrice(BigDecimal purchasePrice) {
+    if (purchasePrice != null && (purchasePrice.doubleValue() < CoreConst.MIN_PRICE || purchasePrice.doubleValue() > CoreConst.MAX_PRICE)) {
       throw new IllegalArgumentException("Price cannot be negative or larger than infinity");
     }
     this.purchasePrice = purchasePrice;
@@ -251,48 +254,48 @@ public class Item {
     notifyChange();
   }
 
-  public Double getHeight() {
+  public BigDecimal getHeight() {
     return height;
   }
 
-  public void setHeight(Double height) {
-    if (height != null && (height < CoreConst.MIN_ITEM_DIMENSION || height > CoreConst.MAX_ITEM_DIMENSION)) {
+  public void setHeight(BigDecimal height) {
+    if (height != null && (height.doubleValue() < CoreConst.MIN_ITEM_DIMENSION || height.doubleValue() > CoreConst.MAX_ITEM_DIMENSION)) {
       throw new IllegalArgumentException("Height is outside of allowed values");
     }
     this.height = height;
     notifyChange();
   }
 
-  public Double getWidth() {
+  public BigDecimal getWidth() {
     return width;
   }
 
-  public void setWidth(Double width) {
-    if (width != null && (width < CoreConst.MIN_ITEM_DIMENSION || width > CoreConst.MAX_ITEM_DIMENSION)) {
+  public void setWidth(BigDecimal width) {
+    if (width != null && (width.doubleValue() < CoreConst.MIN_ITEM_DIMENSION || width.doubleValue() > CoreConst.MAX_ITEM_DIMENSION)) {
       throw new IllegalArgumentException("Width is outside of allowed values");
     }
     this.width = width;
     notifyChange();
   }
 
-  public Double getLength() {
+  public BigDecimal getLength() {
     return length;
   }
 
-  public void setLength(Double length) {
-    if (length != null && (length < CoreConst.MIN_ITEM_DIMENSION || length > CoreConst.MAX_ITEM_DIMENSION)) {
+  public void setLength(BigDecimal length) {
+    if (length != null && (length.doubleValue() < CoreConst.MIN_ITEM_DIMENSION || length.doubleValue() > CoreConst.MAX_ITEM_DIMENSION)) {
       throw new IllegalArgumentException("Length is outside of allowed values");
     }
     this.length = length;
     notifyChange();
   }
 
-  public Double getWeight() {
+  public BigDecimal getWeight() {
     return weight;
   }
 
-  public void setWeight(Double weight) {
-    if (weight != null && (weight < CoreConst.MIN_WEIGHT || weight > CoreConst.MAX_WEIGHT)) {
+  public void setWeight(BigDecimal weight) {
+    if (weight != null && (weight.doubleValue() < CoreConst.MIN_WEIGHT || weight.doubleValue() > CoreConst.MAX_WEIGHT)) {
       throw new IllegalArgumentException("Weight is outside of allowed values");
     }
     this.weight = weight;

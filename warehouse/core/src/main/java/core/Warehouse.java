@@ -140,7 +140,7 @@ public class Warehouse {
   public List<Item> getAllItemsSorted(SortOption options, boolean ascendingOrder) {
     Comparator<Item> comparator = switch (options) {
       case NAME -> Comparator.comparing(Item::getName, String::compareToIgnoreCase);
-      case AMOUNT -> Comparator.comparingInt(Item::getAmount);
+      case AMOUNT -> Comparator.comparingLong(Item::getAmount);
       case PRICE -> Comparator.comparing(Item::getCurrentPrice, Comparator.nullsLast(Comparator.naturalOrder()));
       case WEIGHT -> Comparator.comparing(Item::getWeight, Comparator.nullsLast(Comparator.naturalOrder()));
       case DATE -> Comparator.comparing(Item::getCreationDate);

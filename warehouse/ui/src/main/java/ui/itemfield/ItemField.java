@@ -4,6 +4,7 @@ import javafx.scene.control.TextField;
 import ui.validators.InputValidator;
 import ui.validators.NotEmptyValidatior;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -123,11 +124,19 @@ public class ItemField {
   /**
    * Gets the textFields value as a Integer.
    */
-  public Integer getIntegerValue() {
+  public Long getLongValue() {
     if (textField.getText() == null || textField.getText().equals("")) {
       return null;
     } else {
-      return Integer.valueOf(textField.getText());
+      return Long.valueOf(textField.getText());
     }
+  }
+
+  public BigDecimal getBigDecimalValue() {
+    if (textField.getText() == null || textField.getText().equals("")) {
+      return null;
+    } else {
+      return new BigDecimal(textField.getText());
+    } 
   }
 }

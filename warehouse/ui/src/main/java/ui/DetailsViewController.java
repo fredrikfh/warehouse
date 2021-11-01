@@ -25,13 +25,14 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ui.itemfield.ItemField;
 import ui.validators.BarcodeValidator;
-import ui.validators.DoubleValidator;
-import ui.validators.IntegerValidator;
+import ui.validators.BigDecimalValidator;
+import ui.validators.LongValidator;
 import ui.validators.MaxLengthValidator;
 import ui.validators.NotNegativeValidator;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.Map;
 
 /**
@@ -132,19 +133,19 @@ public class DetailsViewController {
                 item::getBrand)),
 
         entry(Field.AMOUNT,
-            new ItemField(inpAmount, false, itemField -> item.setAmount(itemField.getIntegerValue()),
+            new ItemField(inpAmount, false, itemField -> item.setAmount(itemField.getLongValue()),
                 item::getAmount)),
 
         entry(Field.REGULAR_PRICE,
-            new ItemField(inpOrdinaryPrice, true, itemField -> item.setRegularPrice(itemField.getDoubleValue()),
+            new ItemField(inpOrdinaryPrice, true, itemField -> item.setRegularPrice(itemField.getBigDecimalValue()),
                 item::getRegularPrice)),
 
         entry(Field.SALE_PRICE,
-            new ItemField(inpSalesPrice, true, itemField -> item.setSalePrice(itemField.getDoubleValue()),
+            new ItemField(inpSalesPrice, true, itemField -> item.setSalePrice(itemField.getBigDecimalValue()),
                 item::getSalePrice)),
 
         entry(Field.PURCHASE_PRICE,
-            new ItemField(inpRetailerPrice, true, itemField -> item.setPurchasePrice(itemField.getDoubleValue()),
+            new ItemField(inpRetailerPrice, true, itemField -> item.setPurchasePrice(itemField.getBigDecimalValue()),
                 item::getPurchasePrice)),
 
         entry(Field.SECTION,
@@ -160,19 +161,19 @@ public class DetailsViewController {
                 item::getShelf)),
 
         entry(Field.HEIGHT,
-            new ItemField(inpDimensionsHeigth, true, itemField -> item.setHeight(itemField.getDoubleValue()),
+            new ItemField(inpDimensionsHeigth, true, itemField -> item.setHeight(itemField.getBigDecimalValue()),
                 item::getHeight)),
 
         entry(Field.WIDTH,
-            new ItemField(inpDimensionsWidth, true, itemField -> item.setWidth(itemField.getDoubleValue()),
+            new ItemField(inpDimensionsWidth, true, itemField -> item.setWidth(itemField.getBigDecimalValue()),
                 item::getWidth)),
 
         entry(Field.LENGTH,
-            new ItemField(inpDimensionsLength, true, itemField -> item.setLength(itemField.getDoubleValue()),
+            new ItemField(inpDimensionsLength, true, itemField -> item.setLength(itemField.getBigDecimalValue()),
                 item::getLength)),
 
         entry(Field.WEIGHT,
-            new ItemField(inpWeight, true, itemField -> item.setWeight(itemField.getDoubleValue()),
+            new ItemField(inpWeight, true, itemField -> item.setWeight(itemField.getBigDecimalValue()),
                 item::getWeight)),
 
         entry(Field.BARCODE, 
@@ -201,21 +202,21 @@ public class DetailsViewController {
   private void addInputValidationListeners() {
     fields.get(Field.NAME).addValidators();
     fields.get(Field.BRAND).addValidators();
-    fields.get(Field.AMOUNT).addValidators(new IntegerValidator(), new NotNegativeValidator());
+    fields.get(Field.AMOUNT).addValidators(new LongValidator(), new NotNegativeValidator());
 
-    fields.get(Field.REGULAR_PRICE).addValidators(new DoubleValidator(), new NotNegativeValidator());
-    fields.get(Field.SALE_PRICE).addValidators(new DoubleValidator(), new NotNegativeValidator());
-    fields.get(Field.PURCHASE_PRICE).addValidators(new DoubleValidator(), new NotNegativeValidator());
+    fields.get(Field.REGULAR_PRICE).addValidators(new BigDecimalValidator(), new NotNegativeValidator());
+    fields.get(Field.SALE_PRICE).addValidators(new BigDecimalValidator(), new NotNegativeValidator());
+    fields.get(Field.PURCHASE_PRICE).addValidators(new BigDecimalValidator(), new NotNegativeValidator());
 
     fields.get(Field.SECTION).addValidators(new MaxLengthValidator(2));
     fields.get(Field.ROW).addValidators(new MaxLengthValidator(2));
     fields.get(Field.SHELF).addValidators(new MaxLengthValidator(2));
 
-    fields.get(Field.HEIGHT).addValidators(new DoubleValidator(), new NotNegativeValidator());
-    fields.get(Field.LENGTH).addValidators(new DoubleValidator(), new NotNegativeValidator());
-    fields.get(Field.WIDTH).addValidators(new DoubleValidator(), new NotNegativeValidator());
+    fields.get(Field.HEIGHT).addValidators(new BigDecimalValidator(), new NotNegativeValidator());
+    fields.get(Field.LENGTH).addValidators(new BigDecimalValidator(), new NotNegativeValidator());
+    fields.get(Field.WIDTH).addValidators(new BigDecimalValidator(), new NotNegativeValidator());
 
-    fields.get(Field.WEIGHT).addValidators(new DoubleValidator(), new NotNegativeValidator());
+    fields.get(Field.WEIGHT).addValidators(new BigDecimalValidator(), new NotNegativeValidator());
     fields.get(Field.BARCODE).addValidators(new BarcodeValidator());
   }
 

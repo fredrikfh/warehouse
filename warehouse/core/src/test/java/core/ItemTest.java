@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.math.BigDecimal;
 import java.util.Random;
 import java.util.UUID;
 
@@ -53,16 +54,16 @@ public class ItemTest {
     assertThrows(IllegalArgumentException.class, () -> item.setAmount(CoreConst.MAX_AMOUNT+1));
     assertThrows(IllegalArgumentException.class, () -> item.setBarcode("abcabcabcabca"));
     assertThrows(IllegalArgumentException.class, () -> item.setBarcode("12345678"));
-    assertThrows(IllegalArgumentException.class, () -> item.setRegularPrice(CoreConst.MIN_PRICE-1));
-    assertThrows(IllegalArgumentException.class, () -> item.setSalePrice(CoreConst.MIN_PRICE-1));
-    assertThrows(IllegalArgumentException.class, () -> item.setPurchasePrice(CoreConst.MIN_PRICE-1));
+    assertThrows(IllegalArgumentException.class, () -> item.setRegularPrice(new BigDecimal(CoreConst.MIN_PRICE - 1)));
+    assertThrows(IllegalArgumentException.class, () -> item.setSalePrice(new BigDecimal(CoreConst.MIN_PRICE - 1)));
+    assertThrows(IllegalArgumentException.class, () -> item.setPurchasePrice(new BigDecimal(CoreConst.MIN_PRICE - 1)));
     assertThrows(IllegalArgumentException.class, () -> item.setSection("A".repeat(CoreConst.MAX_SECTION_LENGTH+1)));
     assertThrows(IllegalArgumentException.class, () -> item.setRow("A".repeat(CoreConst.MAX_ROW_LENGTH+1)));
     assertThrows(IllegalArgumentException.class, () -> item.setShelf("A".repeat(CoreConst.MAX_SHELF_LENGTH+1)));
-    assertThrows(IllegalArgumentException.class, () -> item.setHeight(CoreConst.MIN_ITEM_DIMENSION-1));
-    assertThrows(IllegalArgumentException.class, () -> item.setWidth(CoreConst.MIN_ITEM_DIMENSION-1));
-    assertThrows(IllegalArgumentException.class, () -> item.setLength(CoreConst.MIN_ITEM_DIMENSION-1));
-    assertThrows(IllegalArgumentException.class, () -> item.setWeight(CoreConst.MIN_WEIGHT-1));
+    assertThrows(IllegalArgumentException.class, () -> item.setHeight(new BigDecimal(CoreConst.MIN_ITEM_DIMENSION - 1)));
+    assertThrows(IllegalArgumentException.class, () -> item.setWidth(new BigDecimal(CoreConst.MIN_ITEM_DIMENSION - 1)));
+    assertThrows(IllegalArgumentException.class, () -> item.setLength(new BigDecimal(CoreConst.MIN_ITEM_DIMENSION - 1)));
+    assertThrows(IllegalArgumentException.class, () -> item.setWeight(new BigDecimal(CoreConst.MIN_WEIGHT - 1)));
   }
 
   @Test
@@ -111,16 +112,16 @@ public class ItemTest {
     assertEquals(brandName, item.getBrand());
 
     Double regularPrice = rnd.nextDouble();
-    item.setRegularPrice(regularPrice);
-    assertEquals(regularPrice, item.getRegularPrice());
+    item.setRegularPrice(BigDecimal.valueOf(regularPrice));
+    assertEquals(regularPrice, item.getRegularPrice().doubleValue());
 
     Double salePrice = rnd.nextDouble();
-    item.setSalePrice(salePrice);
-    assertEquals(salePrice, item.getSalePrice());
+    item.setSalePrice(BigDecimal.valueOf(salePrice));
+    assertEquals(salePrice, item.getSalePrice().doubleValue());
 
     Double purchasePrice = rnd.nextDouble();
-    item.setPurchasePrice(purchasePrice);
-    assertEquals(purchasePrice, item.getPurchasePrice());
+    item.setPurchasePrice(BigDecimal.valueOf(purchasePrice));
+    assertEquals(purchasePrice, item.getPurchasePrice().doubleValue());
 
     String section = "A";
     item.setSection(section);
@@ -135,20 +136,20 @@ public class ItemTest {
     assertEquals(shelf, item.getShelf());
 
     Double height = rnd.nextDouble();
-    item.setHeight(height);
-    assertEquals(height, item.getHeight());
+    item.setHeight(BigDecimal.valueOf(height));
+    assertEquals(height, item.getHeight().doubleValue());
 
     Double width = rnd.nextDouble();
-    item.setWidth(width);
-    assertEquals(width, item.getWidth());
+    item.setWidth(BigDecimal.valueOf(width));
+    assertEquals(width, item.getWidth().doubleValue());
 
     Double length = rnd.nextDouble();
-    item.setLength(length);
-    assertEquals(length, item.getLength());
+    item.setLength(BigDecimal.valueOf(length));
+    assertEquals(length, item.getLength().doubleValue());
 
     Double weight = rnd.nextDouble();
-    item.setWeight(weight);
-    assertEquals(weight, item.getWeight());
+    item.setWeight(BigDecimal.valueOf(weight));
+    assertEquals(weight, item.getWeight().doubleValue());
   }
 
   private String getRandomString() {
@@ -204,15 +205,15 @@ public class ItemTest {
     assertEquals(changeCounter, 1);
 
     changeCounter = 0;
-    item.setRegularPrice(100.00);
+    item.setRegularPrice(BigDecimal.valueOf(100.00));
     assertEquals(changeCounter, 1);
 
     changeCounter = 0;
-    item.setSalePrice(99.99);
+    item.setSalePrice(BigDecimal.valueOf(99.99));
     assertEquals(changeCounter, 1);
 
     changeCounter = 0;
-    item.setPurchasePrice(1.43);
+    item.setPurchasePrice(BigDecimal.valueOf(1.43));
     assertEquals(changeCounter, 1);
 
     changeCounter = 0;
@@ -228,26 +229,26 @@ public class ItemTest {
     assertEquals(changeCounter, 1);
 
     changeCounter = 0;
-    item.setHeight(10.0);
+    item.setHeight(BigDecimal.valueOf(10.0));
     assertEquals(changeCounter, 1);
 
     changeCounter = 0;
-    item.setWidth(2.32);
+    item.setWidth(BigDecimal.valueOf(2.32));
     assertEquals(changeCounter, 1);
 
     changeCounter = 0;
-    item.setLength(53.0);
+    item.setLength(BigDecimal.valueOf(53.0));
     assertEquals(changeCounter, 1);
 
     changeCounter = 0;
-    item.setWeight(0.012);
+    item.setWeight(BigDecimal.valueOf(0.012));
     assertEquals(changeCounter, 1);
 
 
     item.removeListener(listener);
 
     changeCounter = 0;
-    item.setLength(53.0);
+    item.setLength(BigDecimal.valueOf(53.0));
     assertEquals(changeCounter, 0);
   }
 }

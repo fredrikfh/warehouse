@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,15 +107,15 @@ public class WarehouseTest {
     item2.incrementAmount();
     item3.incrementAmount();
 
-    item1.setRegularPrice(20.0);
-    item3.setRegularPrice(30.0);
-    item5.setRegularPrice(5.0);
-    item6.setRegularPrice(15.0);
+    item1.setRegularPrice(BigDecimal.valueOf(20.0));
+    item3.setRegularPrice(BigDecimal.valueOf(30.0));
+    item5.setRegularPrice(BigDecimal.valueOf(5.0));
+    item6.setRegularPrice(BigDecimal.valueOf(15.0));
 
-    item2.setWeight(10.0);
-    item3.setWeight(40.0);
-    item5.setWeight(5.0);
-    item6.setWeight(30.0);
+    item2.setWeight(BigDecimal.valueOf(10.0));
+    item3.setWeight(BigDecimal.valueOf(40.0));
+    item5.setWeight(BigDecimal.valueOf(5.0));
+    item6.setWeight(BigDecimal.valueOf(30.0));
 
     wh.addItem(item1);
     wh.addItem(item2);
@@ -177,7 +178,7 @@ public class WarehouseTest {
     assertTrue(updated);
 
     updated = false;
-    item.setHeight(6.9);
+    item.setHeight(BigDecimal.valueOf(6.9));
     assertTrue(updated);
     
     updated = false;

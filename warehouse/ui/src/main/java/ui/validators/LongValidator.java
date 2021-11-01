@@ -1,13 +1,13 @@
 package ui.validators;
 
 /**
- * Validates that input string can be parsed as a Double.
+ * Validates that input string can be parsed as an Integer.
  */
-public class DoubleValidator implements InputValidator {
+public class LongValidator implements InputValidator {
   @Override
   public boolean validateInput(String input) {
     try {
-      Double.valueOf(input);
+      Long.valueOf(input);
       return true;
     } catch (NumberFormatException e) {
       return false;
