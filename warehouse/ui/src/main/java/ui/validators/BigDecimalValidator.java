@@ -9,7 +9,7 @@ public class BigDecimalValidator implements InputValidator {
   @Override
   public boolean validateInput(String input) {
     try {
-      BigDecimal.valueOf(Double.valueOf(input));
+      new BigDecimal(input);
       return true;
     } catch (NumberFormatException e) {
       return false;
