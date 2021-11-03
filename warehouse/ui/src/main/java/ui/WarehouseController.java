@@ -171,9 +171,11 @@ public class WarehouseController implements WarehouseListener {
 
   @FXML
   private void addItem() {
-    Item item = new Item("");
-    openDetailsView(item);
-    detailsViewControllers.get(item).toggleEditing();
+    if (warehouse.isAdmin()) {
+      Item item = new Item("");
+      openDetailsView(item);
+      detailsViewControllers.get(item).toggleEditing();
+    }
   }
 
   @FXML
