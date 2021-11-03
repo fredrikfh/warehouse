@@ -107,20 +107,26 @@ public class WarehouseController implements WarehouseListener {
       } else {
         itemElement.getDecrementButton().setDisable(true);
         itemElement.getIncrementButton().setDisable(true);
-        addItemButton.setDisable(true);
-      }
+      }     
+
       if (warehouse.findItem(id).getAmount() == 0) {
         itemElement.getDecrementButton().setDisable(true);
       }
 
       itemList.getChildren().add(itemElement);
-            
+
       int index = i;
 
       itemElement.setOnMouseClicked(e -> openDetailsView(items.get(index)));
       itemElement.setOnMouseEntered(e -> hover(itemElement, index));
       itemElement.setOnMouseExited(e -> notHover(itemElement, index));
       notHover(itemElement, index);
+    }
+
+    if (warehouse.getCurrentUser() != null){
+      addItemButton.setDisable(false);
+    } else {
+      addItemButton.setDisable(true);
     }
   }
 
