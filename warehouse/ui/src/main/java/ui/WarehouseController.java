@@ -123,7 +123,7 @@ public class WarehouseController implements WarehouseListener {
       notHover(itemElement, index);
     }
 
-    if (warehouse.getCurrentUser() != null){
+    if (warehouse.getCurrentUser() != null) {
       addItemButton.setDisable(false);
     } else {
       addItemButton.setDisable(true);
