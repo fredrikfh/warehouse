@@ -78,6 +78,7 @@ class WarehouseControllerTest {
     warehouseController = loader.getController();
     stage.setScene(new Scene(root));
     stage.show();
+    originalWarehouse = dataPersistence.getWarehouse();
     
     addItemButtonCopy = new Button(ADD_ITEM_BUTTON);
   }
@@ -176,11 +177,6 @@ class WarehouseControllerTest {
 
   @BeforeEach
   void setup() {
-    try {
-      originalWarehouse = dataPersistence.getWarehouse();
-    } catch (Exception e) {
-      System.out.println("Unable to save loaded file");
-    }
     removeAllItems();
   }
 
