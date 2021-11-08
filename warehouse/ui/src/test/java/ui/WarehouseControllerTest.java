@@ -372,12 +372,9 @@ class WarehouseControllerTest {
   @DisplayName("Test sorting and searching items on name")
   void testSortSearchItems(FxRobot robot) {
     login(robot);
-    robot.clickOn(WAREHOUSE_NEW_ITEM_INPUTFIELD).write("B");
-    robot.clickOn(ADD_ITEM_BUTTON);
-    robot.write("C");
-    robot.clickOn(ADD_ITEM_BUTTON);  
-    robot.write("A");
-    robot.clickOn(ADD_ITEM_BUTTON);
+    createNewItem(robot, "A");
+    createNewItem(robot, "B");
+    createNewItem(robot, "C");
 
     robot.clickOn(SORT_OPTIONS_DROPDOWN);
     selectOptionInComboBox(robot, SORT_OPTIONS_DROPDOWN, "Navn");
