@@ -8,15 +8,19 @@ import data.DataPersistence;
 import data.WarehouseFileSaver;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.StageStyle;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -64,14 +68,14 @@ public class WarehouseController implements WarehouseListener {
     }
 
     loginController = new LoginController(this, warehouse);
-
+    usernameLabel.setVisible(false);
     updateInventory();
         
     List<String> displaySortStrings = List.of("Antall", "Dato", "Navn", "Pris", "Vekt");
     sortBySelector.getItems().addAll(displaySortStrings);
 
     searchInput.textProperty().addListener((observable, oldValue, newValue) -> updateInventory());
-
+    
     warehouse.addListener(this);
   }
 
@@ -80,15 +84,30 @@ public class WarehouseController implements WarehouseListener {
     if (warehouse.getCurrentUser() == null) {
       loginController.showLoginView();
     } else {
-      warehouse.removeCurrentUser();
-      usernameLabel.setText("");
-      loginButton.setText("Logg inn");
+      Alert promptLogoutConfirmationAlert = new Alert(AlertType.WARNING);
+      promptLogoutConfirmationAlert.setHeaderText("Er du sikker på at du vil logge ut?");
+      promptLogoutConfirmationAlert.initStyle(StageStyle.UTILITY);
+      ButtonType confirmOkButtonType = new ButtonType("OK", ButtonData.OK_DONE);
+     
+      promptLogoutConfirmationAlert.getButtonTypes().setAll(confirmOkButtonType);
+
+      promptLogoutConfirmationAlert.showAndWait()
+      .filter(response -> response == confirmOkButtonType)
+              .ifPresent(response -> confirmLogout());
     }
     updateInventory();
   }
 
+  private void confirmLogout() {
+    warehouse.removeCurrentUser();
+    usernameLabel.setVisible(false);
+    usernameLabel.setText("");
+    loginButton.setText("Logg inn");
+  }
+
   protected void updateUser() {
     usernameLabel.setText(warehouse.getCurrentUser().getUserName());
+    usernameLabel.setVisible(true);
     loginButton.setText("Logg ut");
     updateInventory();
   }
@@ -107,8 +126,8 @@ public class WarehouseController implements WarehouseListener {
       } else {
         itemElement.getDecrementButton().setDisable(true);
         itemElement.getIncrementButton().setDisable(true);
-      }     
-
+        addItemButton.setVisible(false);
+      }
       if (warehouse.findItem(id).getAmount() == 0) {
         itemElement.getDecrementButton().setDisable(true);
       }
@@ -124,9 +143,9 @@ public class WarehouseController implements WarehouseListener {
     }
 
     if (warehouse.getCurrentUser() != null) {
-      addItemButton.setDisable(false);
+      addItemButton.setVisible(true);
     } else {
-      addItemButton.setDisable(true);
+      addItemButton.setVisible(false);
     }
   }
 

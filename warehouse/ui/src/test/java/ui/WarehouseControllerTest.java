@@ -85,8 +85,7 @@ class WarehouseControllerTest {
   private static final String REGISTER_REGISTERBUTTON = "#btnRegister";
   private static final String CONFIRM_BOX_APPROVE_TEXT = "Slett";  
 
-  private static String testUserName;
-
+  private String testUserName;
   private WarehouseController warehouseController;
   private Parent root;
   private static final String FILENAME = "warehouse";
@@ -373,9 +372,12 @@ class WarehouseControllerTest {
   @DisplayName("Test sorting and searching items on name")
   void testSortSearchItems(FxRobot robot) {
     login(robot);
-    createNewItem(robot, "A");
-    createNewItem(robot, "B");
-    createNewItem(robot, "C");
+    robot.clickOn(WAREHOUSE_NEW_ITEM_INPUTFIELD).write("B");
+    robot.clickOn(ADD_ITEM_BUTTON);
+    robot.write("C");
+    robot.clickOn(ADD_ITEM_BUTTON);  
+    robot.write("A");
+    robot.clickOn(ADD_ITEM_BUTTON);
 
     robot.clickOn(SORT_OPTIONS_DROPDOWN);
     selectOptionInComboBox(robot, SORT_OPTIONS_DROPDOWN, "Navn");

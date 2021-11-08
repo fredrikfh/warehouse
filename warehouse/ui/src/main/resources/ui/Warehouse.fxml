@@ -17,13 +17,13 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="root" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" style="-fx-border-width: 10;" stylesheets="@ButtonStyle.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.WarehouseController">
-    <GridPane fx:id="dividerGridPane" minWidth="450.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<AnchorPane fx:id="root" minHeight="500.0" minWidth="600.0" prefHeight="500.0" prefWidth="600.0" style="-fx-border-width: 10;" stylesheets="@ButtonStyle.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.WarehouseController">
+    <GridPane fx:id="dividerGridPane" minWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
       </columnConstraints>
       <rowConstraints>
-        <RowConstraints minHeight="200.0" vgrow="NEVER" />
+        <RowConstraints minHeight="130.0" vgrow="NEVER" />
          <RowConstraints maxHeight="25.0" minHeight="30.0" prefHeight="25.0" vgrow="NEVER" />
         <RowConstraints vgrow="SOMETIMES" />
       </rowConstraints>
@@ -35,16 +35,9 @@
                     <Font size="32.0" />
                 </font>
               </Label>
-              <Label fx:id="usernameLabel" layoutX="340.0" layoutY="15.0" maxWidth="50.0" prefWidth="50.0" AnchorPane.rightAnchor="110.0" />
+              <Label fx:id="usernameLabel" layoutX="340.0" layoutY="15.0" maxWidth="95.0" prefHeight="16.0" prefWidth="95.0" style="-fx-background-color: #dddddd; -fx-background-radius: 10px; -fx-padding: 2px 2px 2px 10px" AnchorPane.rightAnchor="110.0" />
+             <Button fx:id="loginButton" layoutX="468.0" layoutY="10.0" minWidth="70.0" onAction="#login" text="Logg inn" AnchorPane.rightAnchor="30.0" />
           </AnchorPane>
-          <!-- Start of add new item box -->
-          <HBox fx:id="addItemVBox" alignment="CENTER" minHeight="50.0" spacing="20" style="-fx-background-color: #f1f1f1; -fx-border-radius: 10px;">
-              <children>
-                <!--<Text text="Legg til nytt produkt" wrappingWidth="120" />-->
-                <Button fx:id="addItemButton" id="addItemButton" minWidth="70" onAction="#addItem" text="Legg til produkt" />
-                <Button fx:id="loginButton" layoutX="355.0" layoutY="11.0" minWidth="70.0" onAction="#login" text="Logg inn" AnchorPane.rightAnchor="40.0" />
-              </children>
-          </HBox>
           <HBox fx:id="searchPane" alignment="center" minHeight="72.0" prefHeight="72.0" spacing="20" style="-fx-background-color: #f1f1f1; -fx-border-radius: 10px;">
               <Text text="Søk" />
               <TextField fx:id="searchInput" minWidth="200" prefHeight="27.0" promptText="Navn" />
@@ -67,9 +60,15 @@
                     </VBox>
                     </graphic>
                   </Button>
+             <!--<Text text="Legg til nytt produkt" wrappingWidth="120" />-->
+             <Button id="addItemButton" fx:id="addItemButton" minWidth="70" onAction="#addItem" text="Legg til produkt">
+                  <HBox.margin>
+                     <Insets left="20.0" right="20.0" />
+                  </HBox.margin>
+               </Button>
           </HBox>
     </VBox>
-         <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #dddddd;" GridPane.rowIndex="1">
+         <AnchorPane prefHeight="110.0" prefWidth="600.0" style="-fx-background-color: #dddddd;" GridPane.rowIndex="1">
             <children>
                <Label alignment="CENTER" contentDisplay="CENTER" text="Merke/Navn" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="0.0">
                   <font>
