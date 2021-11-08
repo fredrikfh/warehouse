@@ -10,8 +10,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -93,16 +93,16 @@ public class WarehouseController implements WarehouseListener {
 
       promptLogoutConfirmationAlert.showAndWait()
       .filter(response -> response == confirmOkButtonType)
-        .ifPresent(response -> confirmLogout());
+              .ifPresent(response -> confirmLogout());
     }
     updateInventory();
   }
 
   private void confirmLogout() {
-      warehouse.removeCurrentUser();
-      usernameLabel.setVisible(false);
-      usernameLabel.setText("");
-      loginButton.setText("Logg inn");
+    warehouse.removeCurrentUser();
+    usernameLabel.setVisible(false);
+    usernameLabel.setText("");
+    loginButton.setText("Logg inn");
   }
 
   protected void updateUser() {
