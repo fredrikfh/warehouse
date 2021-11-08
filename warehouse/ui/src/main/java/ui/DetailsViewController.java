@@ -270,12 +270,12 @@ public class DetailsViewController {
   
   @FXML private void promptRemoveItem() {
     Alert promptDeleteConfirmationAlert = new Alert(AlertType.WARNING);
-    promptDeleteConfirmationAlert.setHeaderText("Vil du virkelig slette " + item.getName() + "?");
+    promptDeleteConfirmationAlert.setHeaderText("Er du sikker på at du vil slette " + item.getName() + "?");
     promptDeleteConfirmationAlert.setContentText("Denne handlingen kan ikke angres");
     promptDeleteConfirmationAlert.initStyle(StageStyle.UTILITY);
     ButtonType dontDeleteButtonType = new ButtonType("Ikke slett", ButtonData.CANCEL_CLOSE);
     ButtonType confirmDeleteButtonType = new ButtonType("Slett", ButtonData.OK_DONE);
-    
+
     promptDeleteConfirmationAlert.getButtonTypes().setAll(dontDeleteButtonType, confirmDeleteButtonType);
 
     promptDeleteConfirmationAlert.showAndWait()

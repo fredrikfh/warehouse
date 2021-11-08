@@ -35,7 +35,7 @@
                     <Font size="32.0" />
                 </font>
               </Label>
-              <Label fx:id="usernameLabel" layoutX="340.0" layoutY="15.0" maxWidth="50.0" prefWidth="50.0" AnchorPane.rightAnchor="110.0" />
+              <Label fx:id="usernameLabel" layoutX="340.0" layoutY="15.0" maxWidth="95.0" prefHeight="16.0" prefWidth="95.0" style="-fx-background-color: #dddddd; -fx-background-radius: 10px; -fx-padding: 2px 2px 2px 10px" AnchorPane.rightAnchor="110.0" />
              <Button fx:id="loginButton" layoutX="468.0" layoutY="10.0" minWidth="70.0" onAction="#login" text="Logg inn" AnchorPane.rightAnchor="30.0" />
           </AnchorPane>
           <HBox fx:id="searchPane" alignment="center" minHeight="72.0" prefHeight="72.0" spacing="20" style="-fx-background-color: #f1f1f1; -fx-border-radius: 10px;">
