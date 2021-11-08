@@ -13,7 +13,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -107,7 +106,7 @@ public class WarehouseController implements WarehouseListener {
       } else {
         itemElement.getDecrementButton().setDisable(true);
         itemElement.getIncrementButton().setDisable(true);
-        addItemButton.setDisable(true);
+        addItemButton.setVisible(false);
       }
       if (warehouse.findItem(id).getAmount() == 0) {
         itemElement.getDecrementButton().setDisable(true);
@@ -124,19 +123,17 @@ public class WarehouseController implements WarehouseListener {
     }
 
     if (warehouse.getCurrentUser() != null) {
-      addItemButton.setDisable(false);
+      addItemButton.setVisible(true);
     } else {
-      addItemButton.setDisable(true);
+      addItemButton.setVisible(false);
     }
   }
 
   private void openDetailsView(Item item) {
-    if (warehouse.isAdmin()) {
-      if (! detailsViewControllers.containsKey(item)) {
-        detailsViewControllers.put(item, new DetailsViewController(item, this.warehouse, this));
-      }
-      detailsViewControllers.get(item).showDetailsView();
+    if (! detailsViewControllers.containsKey(item)) {
+      detailsViewControllers.put(item, new DetailsViewController(item, this.warehouse, this));
     }
+    detailsViewControllers.get(item).showDetailsView();
   }
 
   private void notHover(ItemElementAnchorPane itemElement, int i) {
