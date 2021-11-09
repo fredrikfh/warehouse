@@ -24,9 +24,9 @@
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
       </columnConstraints>
       <rowConstraints>
-        <RowConstraints minHeight="130.0" vgrow="NEVER" />
-         <RowConstraints maxHeight="25.0" minHeight="30.0" prefHeight="25.0" vgrow="NEVER" />
-        <RowConstraints vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="126.0" minHeight="107.0" prefHeight="113.0" vgrow="NEVER" />
+         <RowConstraints maxHeight="53.0" minHeight="30.0" prefHeight="31.0" vgrow="NEVER" />
+        <RowConstraints maxHeight="356.0" minHeight="344.0" prefHeight="356.0" vgrow="SOMETIMES" />
       </rowConstraints>
         <children>
         <VBox fx:id="titleAddandSearch" prefWidth="560.0" spacing="10.0">
@@ -36,19 +36,19 @@
                      <Image url="@icon/white_transparent.png" />
                   </image>
                </ImageView>
-              <Label fx:id="usernameLabel" layoutX="340.0" layoutY="15.0" maxWidth="95.0" prefHeight="16.0" prefWidth="95.0" style="-fx-background-color: rgba(0,0,0,0.15); -fx-background-radius: 10px; -fx-padding: 2px 2px 2px 10px;" textFill="WHITE" AnchorPane.rightAnchor="110.0" />
-             <Button fx:id="loginButton" layoutX="524.0" layoutY="12.0" minWidth="70.0" onAction="#login" style="-fx-background-color: #fff; -fx-text-fill: #840B9B;" text="Logg inn" textFill="#840b9b" AnchorPane.rightAnchor="30.0">
+              <Label fx:id="usernameLabel" layoutX="413.0" layoutY="15.0" maxWidth="95.0" prefHeight="16.0" prefWidth="95.0" style="-fx-background-color: rgba(0,0,0,0.15); -fx-background-radius: 10px; -fx-padding: 2px 2px 2px 10px;" textFill="WHITE" AnchorPane.rightAnchor="116.0" />
+             <Button fx:id="loginButton" layoutX="524.0" layoutY="12.0" minWidth="70.0" onAction="#login" styleClass="loginButton" text="Logg inn" textFill="#840b9b" AnchorPane.rightAnchor="30.0">
                   <font>
                      <Font name="System Bold" size="13.0" />
                   </font></Button>
           </AnchorPane>
-          <HBox fx:id="searchPane" alignment="center" minHeight="72.0" prefHeight="72.0" spacing="20" style="-fx-background-color: #f1f1f1; -fx-border-radius: 10px;">
+          <HBox fx:id="searchPane" alignment="center" minHeight="44.0" prefHeight="44.0" prefWidth="624.0" spacing="20" style="-fx-background-color: #f1f1f1; -fx-border-radius: 10px;">
               <TextField fx:id="searchInput" minWidth="200" prefHeight="27.0" promptText="søk..." styleClass="searchField" stylesheets="@inputStyle.css">
                   <opaqueInsets>
                      <Insets />
                   </opaqueInsets></TextField>
-              <ComboBox fx:id="sortBySelector" minWidth="98.0" onAction="#changeSortBy" prefHeight="27.0" promptText="Sorter" />
-                  <Button fx:id="orderByButton" mnemonicParsing="false" onAction="#changeOrderBy" prefHeight="27.0" prefWidth="32.0" styleClass="orderByButton">
+              <ComboBox fx:id="sortBySelector" minWidth="98.0" onAction="#changeSortBy" prefHeight="27.0" promptText="Sorter" styleClass="sortBox" />
+                  <Button fx:id="orderByButton" minHeight="27.0" minWidth="32.0" mnemonicParsing="false" onAction="#changeOrderBy" prefHeight="27.0" prefWidth="32.0" styleClass="orderByButton" HBox.hgrow="NEVER">
                     <graphic>
                     <VBox fx:id="sortAndOrderSelectors" alignment="center" spacing="5.0">
                           <children>

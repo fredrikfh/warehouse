@@ -21,12 +21,16 @@ TextField:disabled {
 
 .searchField {
   -fx-background-image:url('search.png');
+  -fx-background-color: rgba(0,0,0,0.05);
   -fx-background-repeat: no-repeat;
   -fx-background-position: 95%;
   -fx-background-size:15px;
+  -fx-prompt-text-fill:  rgba(1,1,1,0.7);
+  -fx-border-color: rgba(0,0,0,0);
+  -fx-border-size:1px;
 }
 
 
 .searchField:hover, .searchField:focused {
-  -fx-border-color:#840B9B;
+  -fx-background-color: rgba(0,0,0,0.10);
 }
