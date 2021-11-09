@@ -14,10 +14,6 @@
 .orderByButton {
     -fx-text-fill: BLACK;
     -fx-background-color: rgba(0,0,0,0.05);
-    /*-fx-border-color: GRAY;*/
-    -fx-border-color: rgba(0,0,0,0);
-    -fx-border-size:2px;
-    -fx-border-radius: 3;
 }
 .orderByButton:hover, .orderByButton:focus {
     -fx-background-color: rgba(0,0,0,0.10);

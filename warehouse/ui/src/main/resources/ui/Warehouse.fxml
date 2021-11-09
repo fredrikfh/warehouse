@@ -18,8 +18,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" minHeight="500.0" minWidth="600.0" prefHeight="500.0" prefWidth="624.0" style="-fx-border-width: 10;" stylesheets="@ButtonStyle.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.WarehouseController">
-    <GridPane fx:id="dividerGridPane" minWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<AnchorPane fx:id="root" minWidth="-Infinity" prefHeight="500.0" prefWidth="624.0" style="-fx-border-width: 10;" stylesheets="@ButtonStyle.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.WarehouseController">
+    <GridPane fx:id="dividerGridPane" minWidth="600.0" prefHeight="500.0" prefWidth="624.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
       </columnConstraints>
@@ -66,7 +66,6 @@
                     </VBox>
                     </graphic>
                   </Button>
-             <!--<Text text="Legg til nytt produkt" wrappingWidth="120" />-->
              <Button id="addItemButton" fx:id="addItemButton" minWidth="70" onAction="#addItem" style="-fx-background-color: #840B9B;" text="Legg til produkt">
                   <HBox.margin>
                      <Insets left="20.0" right="20.0" />
@@ -86,9 +85,9 @@
                   </font></Label>
             </children>
          </AnchorPane>
-     <ScrollPane fx:id="itemContainer" fitToWidth="true" hbarPolicy="NEVER" prefHeight="300.0" prefWidth="450.0" stylesheets="@ItemStyle.css" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+     <ScrollPane fx:id="itemContainer" fitToWidth="true" prefHeight="300.0" prefWidth="450.0" style="-fx-fit-to-height: true;" stylesheets="@ItemStyle.css" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
       <content>
-        <VBox fx:id="itemList" alignment="center" spacing="3" />
+        <VBox fx:id="itemList" alignment="center" prefWidth="622.0" spacing="3" />
       </content>
             <GridPane.margin>
                <Insets />
