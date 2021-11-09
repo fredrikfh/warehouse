@@ -7,6 +7,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -15,9 +17,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="root" minHeight="500.0" minWidth="600.0" prefHeight="500.0" prefWidth="600.0" style="-fx-border-width: 10;" stylesheets="@ButtonStyle.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.WarehouseController">
+<AnchorPane fx:id="root" minHeight="500.0" minWidth="600.0" prefHeight="500.0" prefWidth="624.0" style="-fx-border-width: 10;" stylesheets="@ButtonStyle.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.WarehouseController">
     <GridPane fx:id="dividerGridPane" minWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -29,18 +30,23 @@
       </rowConstraints>
         <children>
         <VBox fx:id="titleAddandSearch" prefWidth="560.0" spacing="10.0">
-          <AnchorPane id="appTitleBox">
-              <Label fx:id="appTitle" alignment="center" text="Warehouse" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                <font>
-                    <Font size="32.0" />
-                </font>
-              </Label>
-              <Label fx:id="usernameLabel" layoutX="340.0" layoutY="15.0" maxWidth="95.0" prefHeight="16.0" prefWidth="95.0" style="-fx-background-color: #dddddd; -fx-background-radius: 10px; -fx-padding: 2px 2px 2px 10px" AnchorPane.rightAnchor="110.0" />
-             <Button fx:id="loginButton" layoutX="468.0" layoutY="10.0" minWidth="70.0" onAction="#login" text="Logg inn" AnchorPane.rightAnchor="30.0" />
+          <AnchorPane id="appTitleBox" style="-fx-background-color: #840B9B;">
+               <ImageView fitHeight="50.0" fitWidth="241.0" layoutX="14.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@icon/white_transparent.png" />
+                  </image>
+               </ImageView>
+              <Label fx:id="usernameLabel" layoutX="340.0" layoutY="15.0" maxWidth="95.0" prefHeight="16.0" prefWidth="95.0" style="-fx-background-color: rgba(0,0,0,0.15); -fx-background-radius: 10px; -fx-padding: 2px 2px 2px 10px;" textFill="WHITE" AnchorPane.rightAnchor="110.0" />
+             <Button fx:id="loginButton" layoutX="524.0" layoutY="12.0" minWidth="70.0" onAction="#login" style="-fx-background-color: #fff; -fx-text-fill: #840B9B;" text="Logg inn" textFill="#840b9b" AnchorPane.rightAnchor="30.0">
+                  <font>
+                     <Font name="System Bold" size="13.0" />
+                  </font></Button>
           </AnchorPane>
           <HBox fx:id="searchPane" alignment="center" minHeight="72.0" prefHeight="72.0" spacing="20" style="-fx-background-color: #f1f1f1; -fx-border-radius: 10px;">
-              <Text text="Søk" />
-              <TextField fx:id="searchInput" minWidth="200" prefHeight="27.0" promptText="Navn" />
+              <TextField fx:id="searchInput" minWidth="200" prefHeight="27.0" promptText="søk..." styleClass="searchField" stylesheets="@inputStyle.css">
+                  <opaqueInsets>
+                     <Insets />
+                  </opaqueInsets></TextField>
               <ComboBox fx:id="sortBySelector" minWidth="98.0" onAction="#changeSortBy" prefHeight="27.0" promptText="Sorter" />
                   <Button fx:id="orderByButton" mnemonicParsing="false" onAction="#changeOrderBy" prefHeight="27.0" prefWidth="32.0" styleClass="orderByButton">
                     <graphic>
@@ -61,7 +67,7 @@
                     </graphic>
                   </Button>
              <!--<Text text="Legg til nytt produkt" wrappingWidth="120" />-->
-             <Button id="addItemButton" fx:id="addItemButton" minWidth="70" onAction="#addItem" text="Legg til produkt">
+             <Button id="addItemButton" fx:id="addItemButton" minWidth="70" onAction="#addItem" style="-fx-background-color: #840B9B;" text="Legg til produkt">
                   <HBox.margin>
                      <Insets left="20.0" right="20.0" />
                   </HBox.margin>
