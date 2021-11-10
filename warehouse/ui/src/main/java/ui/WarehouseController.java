@@ -87,12 +87,13 @@ public class WarehouseController implements WarehouseListener {
       Alert promptLogoutConfirmationAlert = new Alert(AlertType.WARNING);
       promptLogoutConfirmationAlert.setHeaderText("Er du sikker på at du vil logge ut?");
       promptLogoutConfirmationAlert.initStyle(StageStyle.UTILITY);
-      ButtonType confirmOkButtonType = new ButtonType("OK", ButtonData.OK_DONE);
+      ButtonType cancelLoginButton = new ButtonType("Nei", ButtonData.CANCEL_CLOSE);
+      ButtonType confirmLoginButton = new ButtonType("Ja", ButtonData.OK_DONE);
      
-      promptLogoutConfirmationAlert.getButtonTypes().setAll(confirmOkButtonType);
+      promptLogoutConfirmationAlert.getButtonTypes().setAll(cancelLoginButton, confirmLoginButton);
 
       promptLogoutConfirmationAlert.showAndWait()
-      .filter(response -> response == confirmOkButtonType)
+      .filter(response -> response == confirmLoginButton)
               .ifPresent(response -> confirmLogout());
     }
     updateInventory();

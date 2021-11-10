@@ -1,20 +1,25 @@
-.button
-{
+.button{
     -fx-text-fill: WHITE;
-    -fx-background-color: #5CA0D9;
-    
+    -fx-background-color: #840B9B; 
 }
 
-#btnDelete
-{
-    -fx-background-color: rgb(255,5,5);
+  .button:hover {
+    -fx-cursor: hand;
+  }
 
+#btnSave {
+    -fx-background-color: #5CA0D9;
+  }
+
+#btnDelete {
+    -fx-background-color: rgb(255,5,5);
 }
 
 .orderByButton {
     -fx-text-fill: BLACK;
     -fx-background-color: rgba(0,0,0,0.05);
 }
+
 .orderByButton:hover, .orderByButton:focus {
     -fx-background-color: rgba(0,0,0,0.10);
   }
@@ -42,14 +47,15 @@
     -fx-border-size:2px;
   }
   
-  .sortBox:hover, .sortBox:focused {
+  .sortBox:hover {
     -fx-background-color: rgba(0,0,0,0.10);
+    -fx-cursor: hand;
   }
 
-  .loginButton {
-      -fx-background-color:#fff;
-      -fx-text-fill:  #840B9B;
-  }
+.loginButton {
+    -fx-background-color:#fff;
+    -fx-text-fill:  #840B9B;
+}
 
   .loginButton:hover {
     -fx-background-color:#f1f1f1;
