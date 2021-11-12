@@ -12,6 +12,8 @@
         <maven.compiler.target>16</maven.compiler.target>
         <jackson.version>2.12.5</jackson.version>
         <skipTests>false</skipTests>
+        <skipUiTests>false</skipUiTests>
+        <headlessTests>false</headlessTests>
     </properties>
 
     <dependencyManagement>
