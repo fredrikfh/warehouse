@@ -28,6 +28,7 @@ import ui.validators.BarcodeValidator;
 import ui.validators.DoubleValidator;
 import ui.validators.IntegerValidator;
 import ui.validators.MaxLengthValidator;
+import ui.validators.NotEmptyValidatior;
 import ui.validators.NotNegativeValidator;
 
 import java.io.IOException;
@@ -199,7 +200,7 @@ public class DetailsViewController {
   }
 
   private void addInputValidationListeners() {
-    fields.get(Field.NAME).addValidators();
+    fields.get(Field.NAME).addValidators(new NotEmptyValidatior());
     fields.get(Field.BRAND).addValidators();
     fields.get(Field.AMOUNT).addValidators(new IntegerValidator(), new NotNegativeValidator());
 
@@ -241,12 +242,28 @@ public class DetailsViewController {
 
   @FXML
   private void saveItem() {
+    if (fields.get(Field.NAME).getStringValue() == null) {
+      fields.get(Field.NAME).saveField(); // adds red border
+      Alert noItemNameAlert = new Alert(AlertType.WARNING);
+      noItemNameAlert.setHeaderText("Legg til et produktnavn for å lagre");
+      noItemNameAlert.initStyle(StageStyle.DECORATED);
+      noItemNameAlert.setTitle("Advarsel");
+      ButtonType confirmButton = new ButtonType("Ok", ButtonData.OK_DONE);
+      noItemNameAlert.getButtonTypes().setAll(confirmButton);
+      noItemNameAlert
+        .showAndWait()
+        .filter(response -> response == confirmButton);
+      return;
+    }
+
     for (ItemField field : fields.values()) {
       field.saveField();
     }
+
     if (!warehouse.containsItem(item.getId())) {
       warehouse.addItem(item);
     }
+
     toggleEditing();
     update();
   }
