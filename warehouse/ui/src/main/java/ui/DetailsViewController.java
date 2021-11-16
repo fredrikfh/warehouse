@@ -250,9 +250,7 @@ public class DetailsViewController {
       noItemNameAlert.setTitle("Advarsel");
       ButtonType confirmButton = new ButtonType("Ok", ButtonData.OK_DONE);
       noItemNameAlert.getButtonTypes().setAll(confirmButton);
-      noItemNameAlert
-        .showAndWait()
-        .filter(response -> response == confirmButton);
+      noItemNameAlert.showAndWait().filter(response -> response == confirmButton);
       return;
     }
 
