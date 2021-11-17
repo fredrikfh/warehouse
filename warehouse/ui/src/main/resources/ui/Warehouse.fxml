@@ -31,7 +31,7 @@
         <children>
         <VBox fx:id="titleAddandSearch" prefWidth="560.0" spacing="10.0">
           <AnchorPane id="appTitleBox" style="-fx-background-color: #840B9B;">
-               <ImageView fitHeight="50.0" fitWidth="241.0" layoutX="14.0" pickOnBounds="true" preserveRatio="true">
+               <ImageView fx:id="warehouseLogo" id="warehouseLogo" fitHeight="50.0" fitWidth="241.0" layoutX="14.0" pickOnBounds="true" preserveRatio="true">
                   <image>
                      <Image url="@appIcon/white_transparent.png" />
                   </image>

@@ -1,4 +1,4 @@
-.button{
+.button {
     -fx-text-fill: WHITE;
     -fx-background-color: #840B9B; 
 }
@@ -47,10 +47,10 @@
     -fx-border-size:2px;
 }
   
-.sortBox:hover, .sortBox:showing {
-    -fx-background-color: rgba(0,0,0,0.10);
-    -fx-cursor: hand;
-}
+    .sortBox:hover, .sortBox:showing {
+        -fx-background-color: rgba(0,0,0,0.10);
+        -fx-cursor: hand;
+    }
 
 .sortBox .list-view .list-cell:hover {
     -fx-background-color: #840B9B;
@@ -78,4 +78,8 @@
 .btnDecrementA {
     -fx-graphic: url("../icons/minus-circle.png");
     -fx-background-color:rgba(0,0,0,0);
+}
+
+#warehouseLogo:hover {
+    -fx-cursor: hand;
 }

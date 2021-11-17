@@ -40,6 +40,7 @@ import java.util.Map;
 public class WarehouseController implements EntityCollectionListener<Item>, LoadingListener {
   private ClientWarehouse warehouse;
 
+  @FXML private ImageView warehouseLogo;
   @FXML private Label usernameLabel;
   @FXML private Button loginButton;
   @FXML private Button addItemButton;
@@ -88,8 +89,9 @@ public class WarehouseController implements EntityCollectionListener<Item>, Load
     rt.setByAngle(360);
     rt.setCycleCount(-1);
     rt.setAutoReverse(false);
-
     rt.play();
+
+    warehouseLogo.setOnMouseClicked(e -> {reset();});
   }
 
   protected void setStage(Stage stage) {
@@ -157,6 +159,14 @@ public class WarehouseController implements EntityCollectionListener<Item>, Load
 
   protected void close() {
     stage.close();
+  }
+
+  private void reset() {
+    searchInput.setText("");
+    sortBySelector.getItems().clear();
+    List<String> displaySortStrings = List.of("Antall", "Dato", "Navn", "Pris", "Vekt");
+    sortBySelector.getItems().addAll(displaySortStrings);
+
   }
 
   @FXML
