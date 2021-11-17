@@ -47,10 +47,10 @@
     -fx-border-size:2px;
 }
   
-    .sortBox:hover, .sortBox:showing {
-        -fx-background-color: rgba(0,0,0,0.10);
-        -fx-cursor: hand;
-    }
+.sortBox:hover, .sortBox:showing {
+    -fx-background-color: rgba(0,0,0,0.10);
+    -fx-cursor: hand;
+}
 
 .sortBox .list-view .list-cell:hover {
     -fx-background-color: #840B9B;

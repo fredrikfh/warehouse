@@ -91,7 +91,9 @@ public class WarehouseController implements EntityCollectionListener<Item>, Load
     rt.setAutoReverse(false);
     rt.play();
 
-    warehouseLogo.setOnMouseClicked(e -> {reset();});
+    warehouseLogo.setOnMouseClicked(e -> {
+      reset();
+    });
   }
 
   protected void setStage(Stage stage) {
@@ -166,6 +168,7 @@ public class WarehouseController implements EntityCollectionListener<Item>, Load
     sortBySelector.getItems().clear();
     List<String> displaySortStrings = List.of("Antall", "Dato", "Navn", "Pris", "Vekt");
     sortBySelector.getItems().addAll(displaySortStrings);
+    sortBySelector.setPromptText("Sorter");
 
   }
 
