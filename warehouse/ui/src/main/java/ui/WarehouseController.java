@@ -165,11 +165,6 @@ public class WarehouseController implements EntityCollectionListener<Item>, Load
 
   private void reset() {
     searchInput.setText("");
-    sortBySelector.getItems().clear();
-    List<String> displaySortStrings = List.of("Antall", "Dato", "Navn", "Pris", "Vekt");
-    sortBySelector.getItems().addAll(displaySortStrings);
-    sortBySelector.setPromptText("Sorter");
-
   }
 
   @FXML
