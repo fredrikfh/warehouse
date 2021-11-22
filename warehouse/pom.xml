@@ -161,5 +161,6 @@
         <module>server</module>
         <module>zxing</module>
         <module>springboot/server</module>
+        <module>zxing</module>
     </modules>
 </project>
