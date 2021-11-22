@@ -157,6 +157,7 @@
                     <javaOptions>
                         <option>-Dfile.encoding=UTF-8</option>
                     </javaOptions>
+                    <icon>src/main/resources/ui/appIcon/purple_square_transparent@2x.ico</icon>
                     <!-- linux options --> 
                     <linuxShortcut>true</linuxShortcut>
                     <linuxMenuGroup>Warehouse</linuxMenuGroup>
