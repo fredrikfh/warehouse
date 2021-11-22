@@ -1,30 +1,30 @@
 package ui;
 
-import net.sourceforge.barbecue.Barcode;
-import net.sourceforge.barbecue.BarcodeFactory;
-import net.sourceforge.barbecue.BarcodeImageHandler;
+import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
+import javafx.scene.paint.Color;
+import zxing.BarcodeFormat;
+import zxing.MultiFormatWriter;
+import zxing.common.BitMatrix;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 /**
- * Wrapper class for a static function that generates an InputStream with a barcode image from a barcode string.
+ * Wrapper class for a static function that generates an InputStream with a
+ * barcode image from a barcode string.
  */
 public interface BarcodeCreator {
-  static InputStream generateBarcodeImageInputStream(String barcodeText) throws Exception {
-    Barcode barcode = BarcodeFactory.createEAN13(barcodeText);
+  public static Image generateBarcodeImage(String barcodeText) throws Exception {
+    MultiFormatWriter writer = new MultiFormatWriter();
 
-    Path barcodesFolder = Path.of(System.getProperty("user.home"), "warehouse", "barcodes");
-    Files.createDirectories(barcodesFolder);
+    BitMatrix bm = writer.encode(barcodeText, BarcodeFormat.EAN_13, 200, 60);
+    WritableImage image = new WritableImage(200, 60);
 
-    File file = barcodesFolder.resolve(barcodeText + ".png").toFile();
-    if (file.createNewFile()) {
-      BarcodeImageHandler.savePNG(barcode, file);
+    for (int i = 0; i < image.getWidth(); i++) {
+      for (int j = 0; j < image.getHeight(); j++) {
+        image.getPixelWriter().setColor(i, j, bm.get(i, j) ? Color.BLACK : Color.WHITE);
+      }
     }
-
-    return new FileInputStream(file);
+    
+    return image;
   }
 }
