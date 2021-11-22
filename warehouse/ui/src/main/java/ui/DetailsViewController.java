@@ -36,7 +36,6 @@ import ui.validators.NotEmptyValidatior;
 import ui.validators.NotNegativeValidator;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Map;
 
 /**
@@ -292,9 +291,8 @@ public class DetailsViewController {
   }
 
   private void generateBarcodeImage() {
-    try (InputStream imageInputStream = BarcodeCreator
-        .generateBarcodeImageInputStream(item.getBarcode().substring(0, 12))) {
-      Image barcodeImage = new Image(imageInputStream);
+    try {
+      Image barcodeImage = BarcodeCreator.generateBarcodeImage(item.getBarcode().substring(0, 12));
       barcodeImageView.setImage(barcodeImage);
     } catch (Exception e) {
       e.printStackTrace();
