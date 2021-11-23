@@ -11,4 +11,7 @@
     <Match>
         <Bug pattern="MS_EXPOSE_REP" />
     </Match>
+    <Match>
+        <Source name=".*[\\/]zxing[\\/].*$"/>
+    </Match>
 </FindBugsFilter>
