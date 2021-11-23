@@ -157,5 +157,6 @@
         <module>localserver</module>
         <module>report</module>
         <module>server</module>
+        <module>zxing</module>
     </modules>
 </project>
