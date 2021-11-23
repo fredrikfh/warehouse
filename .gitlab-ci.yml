@@ -39,7 +39,6 @@ Spotbugs:
   script:
     - cd warehouse
     - mvn install -DskipTests -DskipUiTests -DfailIfNoTests=false
-    - mvn spotbugs:check
   retry: 2
 
 Checkstyle:
