@@ -14,4 +14,7 @@
     <Match>
         <Package name="zxing.*" />
     </Match>
+    <Match>
+        <Source name=".*[\\/]zxing[\\/].*$"/>
+    </Match>
 </FindBugsFilter>
