@@ -7,7 +7,6 @@ import zxing.BarcodeFormat;
 import zxing.MultiFormatWriter;
 import zxing.common.BitMatrix;
 
-
 /**
  * Wrapper class for a static function that generates an InputStream with a
  * barcode image from a barcode string.
