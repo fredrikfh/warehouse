@@ -14,7 +14,4 @@
     <Match>
         <Package name="zxing.*" />
     </Match>
-    <Match>
-        <Package name="zxing.*" />
-    </Match>
 </FindBugsFilter>
