@@ -9,6 +9,12 @@
         <Bug pattern="EI_EXPOSE_REP2" />
     </Match>
     <Match>
+        <Package name="zxing.*" />
+    </Match>
+    <Match>
         <Bug pattern="MS_EXPOSE_REP" />
+    </Match>
+    <Match>
+        <Package name="zxing.*" />
     </Match>
 </FindBugsFilter>

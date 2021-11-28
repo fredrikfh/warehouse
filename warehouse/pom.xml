@@ -159,5 +159,6 @@
         <module>localserver</module>
         <module>report</module>
         <module>springboot/server</module>
+        <module>zxing</module>
     </modules>
 </project>

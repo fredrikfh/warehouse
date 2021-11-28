@@ -6,3 +6,9 @@ Hovedlogikken i modulen utføres i `WarehouseController` som bruker et `Warehous
 En separat kontroller, `DetailsViewController`, håndterer detaljvinduene til hver vare på lager. Dette vinduet er måten man hovedsaklig gjør endringer på varer. `BarcodeCreator` sørger for at vi kan laste inn strekkoder (på EAN13-format) i detaljvinduet.
 
 `RegisterController` og `LoginController` er kontrollerne for å henholdsvis registrere en ny bruker og å logge inn.
+
+## Kompilering
+
+For å kompilere programmet til en kjørbar fil bruk følgende kommando: 
+
+`mvn clean compile javafx:jlink jpackage:jpackage`
