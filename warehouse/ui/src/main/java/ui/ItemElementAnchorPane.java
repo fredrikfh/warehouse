@@ -1,6 +1,6 @@
 package ui;
 
-import core.Item;
+import core.main.Item;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -13,13 +13,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
 /**
- * This element is an item in the list over items.
+ * This element represents an item as a row in the ScrollPane that displays the list of items.
  */
 public class ItemElementAnchorPane extends AnchorPane {
   final Font boldFont = new Font("Arial Bold", 13);
-  private final HBox textAmountAndButtonsHBox;
-  private final VBox brandAndNameVBox;
-  
+
   private final Button incrementButton;
   private final Button decrementButton;
   
@@ -28,7 +26,8 @@ public class ItemElementAnchorPane extends AnchorPane {
     super.setMinHeight(50);
     Label nameLabel = new Label(item.getName());
     nameLabel.setFont(boldFont);
-    
+
+    VBox brandAndNameVBox;
     if (item.getBrand() != null) {
       Label brandLabel = new Label(item.getBrand());
       brandAndNameVBox = new VBox(brandLabel, nameLabel);
@@ -56,7 +55,7 @@ public class ItemElementAnchorPane extends AnchorPane {
     amountLabel.setMinWidth(80);
     amountLabel.setFont(boldFont);
     amountLabel.setAlignment(Pos.CENTER);
-    textAmountAndButtonsHBox = new HBox(decrementButton, amountLabel, incrementButton);
+    HBox textAmountAndButtonsHBox = new HBox(decrementButton, amountLabel, incrementButton);
     textAmountAndButtonsHBox.setSpacing(10);
     textAmountAndButtonsHBox.setAlignment(Pos.CENTER);
     AnchorPane.setRightAnchor(textAmountAndButtonsHBox, 20d);

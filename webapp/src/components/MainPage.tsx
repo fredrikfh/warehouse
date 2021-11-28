@@ -37,10 +37,11 @@ const MainPage = (props: IProps) => {
 
   const deleteItem = async (id: string) => {
     if (!props.loginSession) return
+    else {
+      await deleteRequest('' + props.DOMAIN + props.SERVER_PATH + id, props.loginSession)
+    }
     if (editingItem !== currentItem) {
       setEditingItem(undefined)
-    } else {
-      await deleteRequest('' + props.DOMAIN + props.SERVER_PATH + id, props.loginSession)
     }
     mutate()
     setCurrentItem(undefined)
@@ -84,7 +85,7 @@ const MainPage = (props: IProps) => {
       return (
         <Button
           id="addNewItemButton"
-          className="rounded-pill position-fixed bottom-0 end-50 m-4 btn-lg"
+          className="rounded-pill position-fixed bottom-0 m-4 btn-lg"
           onClick={() =>
             setEditingItem({
               name: '',

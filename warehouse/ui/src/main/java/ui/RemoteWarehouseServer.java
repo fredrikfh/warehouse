@@ -3,11 +3,11 @@ package ui;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import core.Item;
-import core.User;
-import core.server.AuthSession;
-import core.server.LoginRequest;
-import core.server.ServerInterface;
+import core.client.ServerInterface;
+import core.main.AuthSession;
+import core.main.Item;
+import core.main.LoginRequest;
+import core.main.User;
 import data.DataUtils;
 
 import java.net.URI;
@@ -22,7 +22,7 @@ import java.util.concurrent.CompletableFuture;
  * Connection to a remote server.
  */
 public class RemoteWarehouseServer implements ServerInterface {
-  private static final ObjectMapper objectMapper = DataUtils.createObjectMapper();
+  private static final ObjectMapper objectMapper = DataUtils.getObjectMapper();
   private static final HttpClient client = HttpClient.newHttpClient();
   private final String baseUrl;
 

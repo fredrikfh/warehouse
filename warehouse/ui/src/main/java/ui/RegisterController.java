@@ -1,7 +1,7 @@
 package ui;
 
-import core.ClientWarehouse;
-import core.User;
+import core.client.ClientWarehouse;
+import core.main.User;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,10 +24,6 @@ public class RegisterController {
   @FXML PasswordField passwordField1;
   @FXML PasswordField passwordField2;
   @FXML Label errorMessageField;
-
-  private String username;
-  private String password1;
-  private String password2;
 
   private Stage stage;
 
@@ -72,22 +68,20 @@ public class RegisterController {
 
   @FXML
   private void register() {
-    username = usernameField.getText();
-    password1 = passwordField1.getText();
-    password2 = passwordField2.getText();
+    String username = usernameField.getText();
+    String password1 = passwordField1.getText();
+    String password2 = passwordField2.getText();
 
     if (username.isEmpty() || password1.isEmpty() || password2.isEmpty()) {
       errorMessageField.setText("Du må fylle ut alle feltene før du kan gå videre.");
     } else if (!password1.equals(password2)) {
       errorMessageField.setText("Passordene er ikke like.");
     } else {
-      User user = new User(username, password1);
+      User user = new User(username, password1, false);
       CompletableFuture<Void> registerFuture = warehouse.register(user);
-      registerFuture.thenAccept(x -> {
-        Platform.runLater(this::hideRegisterView);
-      }).exceptionally(e -> {
+      registerFuture.thenAccept(x -> Platform.runLater(this::hideRegisterView)).exceptionally(e -> {
         e.printStackTrace();
-        Platform.runLater(() -> errorMessageField.setText(e.getCause().getMessage()));
+        Platform.runLater(() -> errorMessageField.setText("Noe gikk galt under registreringen. Prøv igjenn."));
         return null;
       });
     }

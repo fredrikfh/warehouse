@@ -4,7 +4,7 @@ import LoginRequest from '../modules/LoginRequest'
 
 interface IProps {
   show: boolean
-  error?: String
+  error?: any
   onClose: () => void
   onLogin: (LoginRequest: LoginRequest) => void
 }
@@ -59,9 +59,7 @@ const Login = (props: IProps) => {
           </label>
         </Form.Floating>
         <Col className="mt-2">
-          {props.error && (
-            <span className="bg-danger text-white rounded p-1">{props.error}</span>
-          )}
+          <span className="bg-white text-danger rounded p-1">{props.error}</span>
         </Col>
       </Modal.Body>
 
@@ -70,6 +68,7 @@ const Login = (props: IProps) => {
           <i className="far fa-times"></i> Lukk
         </Button>
         <Button
+          id="login-button-modal"
           variant="primary"
           onClick={() => {
             props.onLogin(loginDetails)

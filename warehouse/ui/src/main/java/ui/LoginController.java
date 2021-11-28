@@ -1,6 +1,6 @@
 package ui;
 
-import core.ClientWarehouse;
+import core.client.ClientWarehouse;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * This controller shows a separate window for loggin in.
+ * This controller shows a separate window for login.
  */
 public class LoginController {
   @FXML
@@ -69,11 +69,11 @@ public class LoginController {
 
   @FXML
   private void login() {
-    String userName = usernameField.getText();
+    String username = usernameField.getText();
     String password = passwordField.getText();
 
-    if (!userName.isEmpty() && !password.isEmpty()) {
-      CompletableFuture<Void> loginFuture = wh.login(userName, password);
+    if (!username.isEmpty() && !password.isEmpty()) {
+      CompletableFuture<Void> loginFuture = wh.login(username, password);
       loginFuture.thenApply(x -> {
         Platform.runLater(() -> {
           whController.confirmLogin();
@@ -82,7 +82,7 @@ public class LoginController {
         return null;
       }).exceptionally(e -> {
         e.printStackTrace();
-        Platform.runLater(() -> errorMessageField.setText(e.getCause().getMessage()));
+        Platform.runLater(() -> errorMessageField.setText("Noe gikk galt under påloggingen. Prøv igjenn."));
         return null;
       });
     } else {
@@ -91,7 +91,7 @@ public class LoginController {
   }
 
   @FXML
-  private void register() {
+  private void openRegisterView() {
     registerController.showRegisterView();
     resetLoginView();
   }

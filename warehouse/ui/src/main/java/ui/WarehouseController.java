@@ -1,12 +1,12 @@
 package ui;
 
-import static core.CoreConst.SortOption;
+import static core.main.CoreConst.SortOption;
 
-import core.ClientWarehouse;
-import core.EntityCollectionListener;
-import core.Item;
-import core.LoadingListener;
-import core.server.ServerInterface;
+import core.client.ClientWarehouse;
+import core.client.LoadingListener;
+import core.client.ServerInterface;
+import core.main.EntityCollectionListener;
+import core.main.Item;
 import javafx.animation.RotateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -18,12 +18,10 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -44,17 +42,12 @@ public class WarehouseController implements EntityCollectionListener<Item>, Load
   private ClientWarehouse warehouse;
 
   @FXML private Label usernameLabel;
-  @FXML private Button loginButton;
+  @FXML private Button openLoginViewOrLogoutButton;
   @FXML private Button addItemButton;
-  @FXML private AnchorPane root;
-  @FXML private GridPane dividerGridPane;
-  @FXML private ScrollPane itemContainer;
   @FXML private VBox itemList;
   @FXML private TextField searchInput;
   @FXML private ComboBox<String> sortBySelector;
-  @FXML private Button orderByButton;
-  @FXML private VBox sortAndOrderSelectors;
-  @FXML private VBox titleAddandSearch;
+  @FXML private Button reverseOrderButton;
   @FXML private AnchorPane statusAnchorPane;
   @FXML private Label statusLabel;
   @FXML private ImageView statusImage;
@@ -64,18 +57,17 @@ public class WarehouseController implements EntityCollectionListener<Item>, Load
 
   private Stage stage;
 
-  private Image emptySearch = new Image(getClass().getResourceAsStream("icons/search-minus.png"));
-  private Image emptyDolly = new Image(getClass().getResourceAsStream("icons/person-dolly-empty.png"));
-  private Image userEdit = new Image(getClass().getResourceAsStream("icons/user-edit-white.png")); 
-  private Image userLock = new Image(getClass().getResourceAsStream("icons/user-lock-white.png")); 
+  private final Image emptySearch = new Image(getClass().getResourceAsStream("icons/search-minus.png"));
+  private final Image emptyDolly = new Image(getClass().getResourceAsStream("icons/person-dolly-empty.png"));
+  private final Image userEdit = new Image(getClass().getResourceAsStream("icons/user-edit-white.png"));
+  private final Image userLock = new Image(getClass().getResourceAsStream("icons/user-lock-white.png"));
 
   private SortOption sortBy = SortOption.DATE;
   private boolean ascending = true;
 
   private final Map<Item, DetailsViewController> detailsViewControllers = new HashMap<>();
   private LoginController loginController;
-  private ServerSelectController serverSelectController;
-  private ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
+  private final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
 
   @FXML
   void initialize() {
@@ -85,7 +77,7 @@ public class WarehouseController implements EntityCollectionListener<Item>, Load
     searchInput.textProperty().addListener((observable, oldValue, newValue) -> updateInventory());
 
     statusLabel.setWrapText(true);
-    serverSelectController = new ServerSelectController(this);
+    ServerSelectController serverSelectController = new ServerSelectController(this);
     serverSelectController.showView();
 
     RotateTransition rt = new RotateTransition(Duration.millis(1000), loadingImage);
@@ -93,7 +85,7 @@ public class WarehouseController implements EntityCollectionListener<Item>, Load
     rt.setCycleCount(-1);
     rt.setAutoReverse(false);
     rt.play();
-    executor.scheduleAtFixedRate(() -> updatePerSecond(), 0, 2, TimeUnit.SECONDS);
+    executor.scheduleAtFixedRate(this::updatePerSecond, 0, 2, TimeUnit.SECONDS);
   }
 
   public void endExecutor() {
@@ -102,7 +94,7 @@ public class WarehouseController implements EntityCollectionListener<Item>, Load
 
   public void updatePerSecond() {
     if (warehouse != null) {
-      Platform.runLater(() -> updateInventory());
+      Platform.runLater(warehouse::loadItems);
     }
   }
 
@@ -133,7 +125,7 @@ public class WarehouseController implements EntityCollectionListener<Item>, Load
   }
 
   @FXML
-  private void login() {
+  private void openLoginViewOrLogout() {
     if (warehouse.getCurrentUser() == null) {
       loginController.showLoginView();
     } else {
@@ -154,30 +146,33 @@ public class WarehouseController implements EntityCollectionListener<Item>, Load
   }
 
   protected void confirmLogin() {
-    usernameLabel.setText(warehouse.getCurrentUser().getUserName());
+    usernameLabel.setText(warehouse.getCurrentUser().getUsername());
     usernameLabel.setVisible(true);
-    loginButton.setText("Logg ut");
+    openLoginViewOrLogoutButton.setText("Logg ut");
     userImage.setImage(userEdit);
     updateInventory();
-    detailsViewControllers.values().forEach((DetailsViewController detailsViewController) -> detailsViewController.close());
+    detailsViewControllers.values().forEach(DetailsViewController::close);
   }
 
   private void confirmLogout() {
     warehouse.logout();
     userImage.setImage(userLock);
     usernameLabel.setText("");
-    loginButton.setText("Logg inn");
+    openLoginViewOrLogoutButton.setText("Logg inn");
     userImage.setImage(userLock);
-    detailsViewControllers.values().forEach((DetailsViewController detailsViewController) -> detailsViewController.close());
+    detailsViewControllers.values().forEach(DetailsViewController::close);
   }
 
   protected void close() {
     stage.close();
   }
 
+  /**
+   * Deletes the current list of items if it exists and creates a new list. If the list is empty
+   * (due to no items or no search results) it will display a corresponding info-message.
+   */
   @FXML
   private void updateInventory() {
-    warehouse.loadItems();
     addItemButton.setVisible(warehouse.getCurrentUser() != null); // set "Legg til produkt" visible when user is logged in
     itemList.getChildren().clear();
     List<Item> items = getItems();
@@ -209,16 +204,20 @@ public class WarehouseController implements EntityCollectionListener<Item>, Load
     }
 
     if (items.isEmpty()) {
-      statusAnchorPane.setVisible(true);
-      if (searchInput.getText().equals("")) {
-        statusLabel.setText("Warehouse har ingen elementer");
-        statusImage.setImage(emptyDolly);
-      } else {
-        statusImage.setImage(emptySearch);
-        statusLabel.setText("Ingen resultater");
-      }
+      displayEmptyMessage();
     } else {
       statusAnchorPane.setVisible(false);
+    }
+  }
+
+  private void displayEmptyMessage() {
+    statusAnchorPane.setVisible(true);
+    if (searchInput.getText().equals("")) {
+      statusLabel.setText("Warehouse har ingen elementer");
+      statusImage.setImage(emptyDolly);
+    } else {
+      statusImage.setImage(emptySearch);
+      statusLabel.setText("Ingen resultater");
     }
   }
   
@@ -322,14 +321,14 @@ public class WarehouseController implements EntityCollectionListener<Item>, Load
   }
 
   @FXML
-  private void changeOrderBy() {
+  private void reverseOrder() {
     ascending = !ascending;
 
-    if (ascending && orderByButton.getStyleClass().contains("descending")) {
-      orderByButton.getStyleClass().remove("descending");
+    if (ascending) {
+      reverseOrderButton.getStyleClass().remove("descending");
     }
-    if (!ascending && !orderByButton.getStyleClass().contains("descending")) {
-      orderByButton.getStyleClass().add("descending");
+    if (!ascending && !reverseOrderButton.getStyleClass().contains("descending")) {
+      reverseOrderButton.getStyleClass().add("descending");
     }
 
     updateInventory();

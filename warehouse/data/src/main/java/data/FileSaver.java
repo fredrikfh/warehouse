@@ -33,12 +33,11 @@ public class FileSaver<T> implements DataPersistence<T> {
       ensureFolderExists();
     } catch (IOException e) {
       e.printStackTrace();
-      // TODO: Handle error somehow
     }
   }
 
   public FileSaver(TypeReference<T> type, String folder) {
-    this(type, DataUtils.createObjectMapper(), folder, "json");
+    this(type, DataUtils.getObjectMapper(), folder, "json");
   }
 
   @Override
